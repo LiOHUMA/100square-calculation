@@ -20,6 +20,7 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
             user: user
         });
     } catch (error) {
+        console.error("エラー:", error);
         return res.status(401).json({ message: "無効なトークンです" });
     }
 }
