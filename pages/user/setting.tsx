@@ -5,11 +5,11 @@ export default function Settings() {
     const router = useRouter();
 
     const handleChangeNickname = () => {
-        router.push("/settings/nickname");
+        router.push("/user/settings/nickname");
     };
   
     const handleChangePassword = () => {
-        router.push("/settings/password");
+        router.push("/user/settings/password");
     };
   
     const handleBackToMenu = () => {

@@ -1,5 +1,5 @@
 import { db } from "./firebase";
-import { doc, getDoc, setDoc } from "firebase/firestore";
+import { doc, getDoc, collection, addDoc, updateDoc, Timestamp  } from "firebase/firestore";
 import { User } from "../models/User";
 import bcrypt from "bcryptjs";
 
@@ -10,6 +10,7 @@ export const getUserById = async (userid: string): Promise<User | null> => {
 
   const data = snap.data();
   return {
+    id: snap.id,
     ...data,
     createdAt: data.createdAt.toDate(),
     updatedAt: data.updatedAt.toDate(),
@@ -19,12 +20,32 @@ export const getUserById = async (userid: string): Promise<User | null> => {
 // 新規ユーザーを保存
 export const createUser = async (user: User) => {
   const hashedPassword = await bcrypt.hash(user.password, 10); // 🔐 パスワードをハッシュ化
-  const ref = doc(db, "users", user.userid);
-  await setDoc(ref, {
+  await addDoc(collection(db, "users"), {
     ...user,
     password: hashedPassword,
     hashFlg: 1,
-    createdAt: new Date(),
-    updatedAt: new Date(),
+    createdAt: Timestamp.now(),
+    updatedAt: Timestamp.now(),
+    deleted: 0,
   });
 };
+
+// ニックネーム変更
+export const changeNickname = async (user: User, trgNickname: string) => {
+  const ref = doc(db, "users", user.id);
+  await updateDoc(ref, {
+    name: trgNickname,
+    updatedAt: Timestamp.now(),
+  });
+}
+
+// パスワード変更
+export const changePassword = async (user: User, trgPassword: string) => {
+  const hashedPassword = await bcrypt.hash(trgPassword, 10); // 🔐 パスワードをハッシュ化
+  const ref = doc(db, "users", user.id);
+  await updateDoc(ref, {
+    password: hashedPassword,
+    hashFlg: 1,
+    updatedAt: Timestamp.now(),
+  });
+}
