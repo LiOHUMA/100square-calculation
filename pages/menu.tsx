@@ -27,7 +27,7 @@ export default function Menu() {
   };
 
   const handleCalculation = () => {
-    router.push("/calc");
+    router.push("/operation-select");
   };
 
   const handleRanking = () => {
