@@ -1,3 +1,14 @@
+//  @package      lib/firebase.ts
+//  @description  認証共通機能。
+//                認証確認するための共通化した機能。
+//  @created      2025-04-27 by uma
+//  @version      1.0.0
+//  @lastModified 2025-04-27 by uma
+
+// 変更履歴
+// ver 1.0.0 - 新規作成
+
+
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 
