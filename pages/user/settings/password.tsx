@@ -1,6 +1,6 @@
 //  @package      pages/user/settings/password.tsx
-//  @description  ユーザーがパスワードを変更できる設定ページ。
-//                現在のパスワードと新しいパスワードを入力し、Firebase Authを使って更新する。
+//  @description  パスワード変更画面。
+//                現在のパスワードと新しいパスワードを入力する画面。
 //  @created      2025-04-25 by uma
 //  @version      1.0.0
 //  @lastModified 2025-04-25 by uma

@@ -1,3 +1,14 @@
+//  @package      pages/menu.tsx
+//  @description  メニュー画面。
+//                各画面に遷移するための画面。
+//  @created      2025-04-25 by uma
+//  @version      1.0.0
+//  @lastModified 2025-04-25 by uma
+
+// 変更履歴
+// ver 1.0.0 - 新規作成
+
+
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { User } from "../models/User";

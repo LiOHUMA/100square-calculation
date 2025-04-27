@@ -1,4 +1,14 @@
-// pages/api/auth/login.ts
+//  @package      pages/api/auth/login.ts
+//  @description  ログイン機能。
+//                ユーザIDとパスワードを入力してログインする。
+//  @created      2025-04-27 by uma
+//  @version      1.0.0
+//  @lastModified 2025-04-27 by uma
+
+// 変更履歴
+// ver 1.0.0 - 新規作成
+
+
 import type { NextApiRequest, NextApiResponse } from "next";
 import { getUserById } from "../../../lib/userService"
 import bcrypt from "bcryptjs";

@@ -1,3 +1,14 @@
+//  @package      pages/api/settings/changeNickname.ts
+//  @description  ニックネームの変更機能。
+//                入力した新しいニックネームに変更をする。
+//  @created      2025-04-27 by uma
+//  @version      1.0.0
+//  @lastModified 2025-04-27 by uma
+
+// 変更履歴
+// ver 1.0.0 - 新規作成
+
+
 import type { NextApiRequest, NextApiResponse } from "next";
 import { getUserById, changeNickname } from "../../../lib/userService"
 import jwt from "jsonwebtoken";
