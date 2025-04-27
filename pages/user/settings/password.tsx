@@ -13,6 +13,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { User } from "../../../models/User";
 import AuthGuard from "../../../components/AuthGuard";
+import PasswordInput from "../../../components/PasswordInput";
 
 export default function Settings() {
     const router = useRouter();
@@ -78,9 +79,27 @@ export default function Settings() {
             <div>
                 <h1>パスワードの変更</h1>
                 <p>パスワードの変更をします</p>
-                <input type="password" placeholder="変更前パスワード" value={bfPw} onChange={(e) => setBfPw(e.target.value)} required />
-                <input type="input" placeholder="変更後パスワード" value={afPw} onChange={(e) => setAfPw(e.target.value)} required />
-                <input type="input" placeholder="変更後確認用パスワード" value={afCheckPw} onChange={(e) => setAfCheckPw(e.target.value)} required />
+                <PasswordInput 
+                          label="変更前パスワード"
+                          placeholder="変更前パスワード"
+                          value={bfPw}
+                          onChange={(e) => setBfPw(e.target.value)}
+                          required
+                />
+                <PasswordInput 
+                          label="変更後パスワード"
+                          placeholder="変更後パスワード"
+                          value={afPw}
+                          onChange={(e) => setAfPw(e.target.value)}
+                          required
+                />
+                <PasswordInput 
+                          label="変更後確認用パスワード"
+                          placeholder="変更後確認用パスワード"
+                          value={afCheckPw}
+                          onChange={(e) => setAfCheckPw(e.target.value)}
+                          required
+                />
                 <button onClick={handleChange}>変更</button>
                 <button onClick={handleBackToOne}>前に戻る</button>
             </div>
