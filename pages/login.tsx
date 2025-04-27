@@ -11,6 +11,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/router";
+import PasswordInput from "../components/PasswordInput";
 
 export default function Login() {
   const [userid, setUserid] = useState("");
@@ -36,8 +37,15 @@ export default function Login() {
     <div>
       <h1>ログイン</h1>
       <form onSubmit={handleLogin}>
+        <label>ユーザーID</label>
         <input type="input" placeholder="ユーザーID" value={userid} onChange={(e) => setUserid(e.target.value)} required />
-        <input type="password" placeholder="パスワード" value={password} onChange={(e) => setPassword(e.target.value)} required />
+        <PasswordInput 
+          label="パスワード"
+          placeholder="パスワード"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          required
+        />
         <button type="submit">ログイン</button>
       </form>
     </div>
