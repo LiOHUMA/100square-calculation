@@ -1,3 +1,14 @@
+//  @package      pages/user/settings/nickname.tsx
+//  @description  ニックネーム変更画面。
+//                変更したい新しいニックネームを入力する画面。
+//  @created      2025-04-27 by uma
+//  @version      1.0.0
+//  @lastModified 2025-04-27 by uma
+
+// 変更履歴
+// ver 1.0.0 - 新規作成
+
+
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { User } from "../../../models/User";

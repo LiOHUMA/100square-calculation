@@ -1,4 +1,14 @@
-// /pages/api/auth/me.ts
+//  @package      pages/api/auth/me.ts
+//  @description  ログイン状況確認機能。
+//                Cookieに必要なユーザ情報が登録されているか確認する。
+//  @created      2025-04-27 by uma
+//  @version      1.0.0
+//  @lastModified 2025-04-27 by uma
+
+// 変更履歴
+// ver 1.0.0 - 新規作成
+
+
 import { NextApiRequest, NextApiResponse } from 'next';
 import { User } from "../../../models/User";
 import { verify } from "jsonwebtoken";
