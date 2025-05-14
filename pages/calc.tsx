@@ -15,7 +15,6 @@ export default function CalculationPage() {
   const [topNumbers, setTopNumbers] = useState<number[]>([]);
   const [sideNumbers, setSideNumbers] = useState<number[]>([]);
   const [operation, setOperation] = useState<string | null>(null);
-  const [startTime, setStartTime] = useState<number | null>(null); // 開始時間を記録
   const router = useRouter();
 
   useEffect(() => {
@@ -35,50 +34,31 @@ export default function CalculationPage() {
       setSideNumbers(numbers);
     };
     generateNumbers();
-
-    // 計算開始時間を記録
-    setStartTime(Date.now());
   }, [router]);
 
-  const handleShowResults = () => {
-    const calculatedResults = sideNumbers.map((sideNum) =>
-      topNumbers.map((topNum) => {
-        switch (operation) {
-          case "addition":
-            return sideNum + topNum;
-          case "subtraction":
-            return sideNum - topNum;
-          case "multiplication":
-            return sideNum * topNum;
-          case "division":
-            return topNum !== 0 ? parseFloat((sideNum / topNum).toFixed(2)) : 0;
-          default:
-            return 0;
-        }
-      })
-    );
-
-    // 経過時間を計算
-    const elapsedTime = startTime ? (Date.now() - startTime) / 1000 : null;
-
-    // 結果画面に遷移
-    router.push({
-      pathname: "/result",
-      query: {
-        results: JSON.stringify(calculatedResults),
-        elapsedTime: elapsedTime?.toString(),
-      },
-    });
+  const getOperationSymbol = () => {
+    switch (operation) {
+      case "addition":
+        return "+";
+      case "subtraction":
+        return "-";
+      case "multiplication":
+        return "×";
+      case "division":
+        return "÷";
+      default:
+        return "";
+    }
   };
 
   return (
     <AuthGuard>
       <div>
-        <h1>百ます計算 {operation}</h1>
+        <h1>百ます計算 - {getOperationSymbol()}</h1>
         <table>
           <thead>
             <tr>
-              <th></th>
+              <th>{getOperationSymbol()}</th>
               {topNumbers.map((num, index) => (
                 <th key={index}>{num}</th>
               ))}
@@ -101,7 +81,10 @@ export default function CalculationPage() {
             ))}
           </tbody>
         </table>
-        <button onClick={handleShowResults} style={{ marginTop: "20px" }}>
+        <button
+          onClick={() => router.push("/result")}
+          style={{ marginTop: "20px" }}
+        >
           結果画面に進む
         </button>
       </div>

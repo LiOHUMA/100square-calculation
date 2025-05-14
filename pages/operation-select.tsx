@@ -21,10 +21,10 @@ export default function OperationSelect() {
     <AuthGuard>
       <div>
         <h1>四則演算を選択してください</h1>
-        <button onClick={() => handleSelect("addition")}>加算</button>
-        <button onClick={() => handleSelect("subtraction")}>減算</button>
-        <button onClick={() => handleSelect("multiplication")}>乗算</button>
-        <button onClick={() => handleSelect("division")}>除算</button>
+        <button onClick={() => handleSelect("addition")}>加算 (+)</button>
+        <button onClick={() => handleSelect("subtraction")}>減算 (-)</button>
+        <button onClick={() => handleSelect("multiplication")}>乗算 (×)</button>
+        <button onClick={() => handleSelect("division")}>除算 (÷)</button>
       </div>
     </AuthGuard>
   );

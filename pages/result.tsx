@@ -1,3 +1,9 @@
+// @description 結果表示ページ
+// @author Your <Name>Onimaru</Name>
+// @description ユーザーが計算結果を確認するためのページです。
+// @date 2025-04-22
+// @version 1.0.0
+
 import { useRouter } from "next/router";
 import AuthGuard from "../components/AuthGuard";
 
