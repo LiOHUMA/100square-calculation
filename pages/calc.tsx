@@ -4,7 +4,7 @@
 //  @description ユーザーが選択した演算に基づいて、10x10のグリッドを生成し、各セルに数値を表示します。
 //  ユーザーは各セルに計算結果を入力することができます。
 //
-//  @date 2025-04-22
+//  @date 2025-05-14
 //  @version 1.0.0
 
 import { useEffect, useState } from "react";
@@ -25,13 +25,12 @@ export default function CalculationPage() {
     }
     setOperation(operation as string);
 
+    // ランダムな数字を生成
     const generateNumbers = () => {
-      const numbers = Array.from(
-        { length: 10 },
-        () => Math.floor(Math.random() * 10) + 1
-      );
-      setTopNumbers(numbers);
-      setSideNumbers(numbers);
+      const createRandomNumbers = () =>
+        Array.from({ length: 10 }, () => Math.floor(Math.random() * 100) + 1);
+      setTopNumbers(createRandomNumbers()); // 横の列
+      setSideNumbers(createRandomNumbers()); // 縦の列
     };
     generateNumbers();
   }, [router]);
