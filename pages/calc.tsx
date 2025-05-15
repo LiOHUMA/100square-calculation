@@ -10,6 +10,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import AuthGuard from "../components/AuthGuard";
+import * as util from "../utils/utilityFile";
 
 export default function CalculationPage() {
   const [topNumbers, setTopNumbers] = useState<number[]>([]);
@@ -28,36 +29,60 @@ export default function CalculationPage() {
     // ランダムな数字を生成
     const generateNumbers = () => {
       const createRandomNumbers = () =>
-        Array.from({ length: 10 }, () => Math.floor(Math.random() * 100) + 1);
+        Array.from({ length: 10 }, () => Math.floor(Math.random() * 10) + 1);
       setTopNumbers(createRandomNumbers()); // 横の列
       setSideNumbers(createRandomNumbers()); // 縦の列
     };
     generateNumbers();
   }, [router]);
 
-  const getOperationSymbol = () => {
-    switch (operation) {
-      case "addition":
-        return "+";
-      case "subtraction":
-        return "-";
-      case "multiplication":
-        return "×";
-      case "division":
-        return "÷";
-      default:
-        return "";
-    }
+  const handleShowResults = () => {
+    // ユーザーの入力を収集
+    const userAnswers = sideNumbers.map((sideNum, rowIndex) =>
+      topNumbers.map((topNum, colIndex) => {
+        const inputElement = document.querySelector(
+          `input[data-row="${rowIndex}"][data-col="${colIndex}"]`
+        ) as HTMLInputElement;
+        return inputElement && inputElement.value.trim() !== ""
+          ? Number(inputElement.value)
+          : null; // 未入力の場合は null を設定
+      })
+    );
+
+    // 正しい答えを計算
+    const correctAnswers = sideNumbers.map((sideNum) =>
+      topNumbers.map((topNum) => {
+        switch (operation) {
+          case "addition":
+            return sideNum + topNum;
+          case "subtraction":
+            return sideNum - topNum;
+          case "multiplication":
+            return sideNum * topNum;
+          case "division":
+            return topNum !== 0 ? parseFloat((sideNum / topNum).toFixed(2)) : 0;
+          default:
+            return 0;
+        }
+      })
+    );
+
+    // 必要なデータをローカルストレージに保存
+    localStorage.setItem("userAnswers", JSON.stringify(userAnswers));
+    localStorage.setItem("correctAnswers", JSON.stringify(correctAnswers));
+    localStorage.setItem("topNumbers", JSON.stringify(topNumbers));
+    localStorage.setItem("sideNumbers", JSON.stringify(sideNumbers));
+    localStorage.setItem("operation", operation || "");
   };
 
   return (
     <AuthGuard>
       <div>
-        <h1>百ます計算 - {getOperationSymbol()}</h1>
+        <h1>百ます計算 {util.getOperationSymbol(operation)}</h1>
         <table>
           <thead>
             <tr>
-              <th>{getOperationSymbol()}</th>
+              <th>{util.getOperationSymbol(operation)}</th>
               {topNumbers.map((num, index) => (
                 <th key={index}>{num}</th>
               ))}
@@ -72,6 +97,8 @@ export default function CalculationPage() {
                     <input
                       type="number"
                       placeholder="?"
+                      data-row={rowIndex}
+                      data-col={colIndex}
                       style={{ width: "50px", textAlign: "center" }}
                     />
                   </td>
@@ -81,7 +108,10 @@ export default function CalculationPage() {
           </tbody>
         </table>
         <button
-          onClick={() => router.push("/result")}
+          onClick={() => {
+            handleShowResults(); // データを保存
+            router.push("/result"); // 結果画面に進む
+          }}
           style={{ marginTop: "20px" }}
         >
           結果画面に進む
