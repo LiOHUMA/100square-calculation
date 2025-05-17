@@ -32,7 +32,7 @@ export const getUserById = async (id: string): Promise<User | null> => {
 export const createUser = async (user: User) => {
   const hashedPassword = await bcrypt.hash(user.password, 10); // 🔐 パスワードをハッシュ化
   const {id, ...userRegist} = user
-  await setDoc(doc(db, "users", user.id), {
+  await setDoc(doc(db, "users", id), {
     ...userRegist,
     password: hashedPassword,
     hashFlg: 1,
