@@ -66,40 +66,42 @@ export default function Settings() {
         router.push("/user/setting");
     };
 
-    if (!userOmit) return <p>認証中...</p>;
-
     return (
         <AuthGuard onAuthSuccess={setUserOmit}>
-            <div>
-                <h1>パスワードの変更</h1>
-                <p>パスワードの変更をします</p>
-                <form onSubmit={handleChange}>
-                    <PasswordInput 
-                          label="変更前パスワード"
-                          placeholder="変更前パスワード"
-                          value={bfPw}
-                          onChange={(e) => setBfPw(e.target.value)}
-                          required
-                    />
-                    <PasswordInput 
-                          label="変更後パスワード"
-                          placeholder="変更後パスワード"
-                          value={afPw}
-                          onChange={(e) => setAfPw(e.target.value)}
-                          required
-                    />
-                    <PasswordInput 
-                          label="変更後確認用パスワード"
-                          placeholder="変更後確認用パスワード"
-                          value={afCheckPw}
-                          onChange={(e) => setAfCheckPw(e.target.value)}
-                          required
-                    />
-                    <button type="submit" disabled={loading}>{loading ? "変更中..." : "変更"}</button>
-                    {err && <p>{err}</p>}
-                </form>
-                <button onClick={handleBackToOne}>前に戻る</button>
-            </div>
+            {userOmit ? (
+                <div>
+                    <h1>パスワードの変更</h1>
+                    <p>パスワードの変更をします</p>
+                    <form onSubmit={handleChange}>
+                        <PasswordInput 
+                            label="変更前パスワード"
+                            placeholder="変更前パスワード"
+                            value={bfPw}
+                            onChange={(e) => setBfPw(e.target.value)}
+                            required
+                        />
+                        <PasswordInput 
+                            label="変更後パスワード"
+                            placeholder="変更後パスワード"
+                            value={afPw}
+                            onChange={(e) => setAfPw(e.target.value)}
+                            required
+                        />
+                        <PasswordInput 
+                            label="変更後確認用パスワード"
+                            placeholder="変更後確認用パスワード"
+                            value={afCheckPw}
+                            onChange={(e) => setAfCheckPw(e.target.value)}
+                            required
+                        />
+                        <button type="submit" disabled={loading}>{loading ? "変更中..." : "変更"}</button>
+                        {err && <p>{err}</p>}
+                    </form>
+                    <button onClick={handleBackToOne}>前に戻る</button>
+                </div>
+            ) : (
+                <p>認証中...</p>
+            )}
         </AuthGuard>
     );
 }
