@@ -26,16 +26,18 @@ export default function Settings() {
       router.push("/menu");
   };
 
-    if (!userOmit) return <p>認証中...</p>;
-
     return (
         <AuthGuard onAuthSuccess={setUserOmit}>
-            <div>
-                <h1>ニックネームの変更が完了しました</h1>
-                <p>「{userOmit.name}」に変更しました</p>
-                <button onClick={handleBackToSetting}>ユーザ設定へ戻る</button>
-                <button onClick={handleBackToMenu}>メニューへ戻る</button>
-            </div>
+            {userOmit ? (
+                <div>
+                    <h1>ニックネームの変更が完了しました</h1>
+                    <p>「{userOmit.name}」に変更しました</p>
+                    <button onClick={handleBackToSetting}>ユーザ設定へ戻る</button>
+                    <button onClick={handleBackToMenu}>メニューへ戻る</button>
+                </div>
+            ) : (
+                <p>認証中...</p>
+            )}
         </AuthGuard>
     );
 }

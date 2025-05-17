@@ -48,10 +48,9 @@ export default function Settings() {
         router.push("/user/setting");
     };
 
-    if (!userOmit) return <p>認証中...</p>;
-
     return (
         <AuthGuard onAuthSuccess={setUserOmit}>
+          {userOmit ? (
             <div>
                 <h1>ニックネームの変更</h1>
                 <p>ニックネームの変更をします</p>
@@ -63,6 +62,9 @@ export default function Settings() {
                 </form>
                 <button onClick={handleBackToOne}>前に戻る</button>
             </div>
+          ) : (
+            <p>認証中...</p>
+          )}
         </AuthGuard>
     );
 }
