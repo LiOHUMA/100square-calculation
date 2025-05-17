@@ -1,33 +1,22 @@
 //  @package      pages/user/settings/nickname.tsx
 //  @description  ニックネーム変更完了画面。
 //                新しいニックネームに変更できたことを知らせる画面。
-//  @created      2025-04-27 by uma
+//  @created      2025-05-14 by uma
 //  @version      1.0.0
-//  @lastModified 2025-04-27 by uma
+//  @lastModified 2025-05-14 by uma
 
 // 変更履歴
 // ver 1.0.0 - 新規作成
 
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useRouter } from "next/router";
-import { User } from "../../../../models/User";
+import { UserOmit } from "../../../../models/User";
 import AuthGuard from "../../../../components/AuthGuard";
 
 export default function Settings() {
     const router = useRouter();
-    const [user, setUser] = useState<User | null>(null);
-
-    useEffect(() => {
-        const fetchUser = async () => {
-          const res = await fetch("/api/auth/me");
-          if (res.ok) {
-            const data = await res.json();
-            setUser(data.user);
-          }
-        };
-        fetchUser();
-    }, []);
+    const [userOmit, setUserOmit] = useState<UserOmit | null>(null);
 
     const handleBackToSetting = () => {
         router.push("/user/setting");
@@ -37,13 +26,13 @@ export default function Settings() {
       router.push("/menu");
   };
 
-    if (!user) return <p>認証中...</p>;
+    if (!userOmit) return <p>認証中...</p>;
 
     return (
-        <AuthGuard>
+        <AuthGuard onAuthSuccess={setUserOmit}>
             <div>
                 <h1>ニックネームの変更が完了しました</h1>
-                <p>「{user.name}」に変更しました</p>
+                <p>「{userOmit.name}」に変更しました</p>
                 <button onClick={handleBackToSetting}>ユーザ設定へ戻る</button>
                 <button onClick={handleBackToMenu}>メニューへ戻る</button>
             </div>
