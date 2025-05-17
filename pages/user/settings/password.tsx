@@ -9,29 +9,20 @@
 // ver 1.0.0 - 新規作成
 
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useRouter } from "next/router";
-import { User } from "../../../models/User";
+import { UserOmit } from "../../../models/User";
 import AuthGuard from "../../../components/AuthGuard";
 import PasswordInput from "../../../components/PasswordInput";
 
 export default function Settings() {
     const router = useRouter();
-    const [user, setUser] = useState<User | null>(null);
+    const [userOmit, setUserOmit] = useState<UserOmit | null>(null);
     const [bfPw, setBfPw] = useState("");
     const [afPw, setAfPw] = useState("");
     const [afCheckPw, setAfCheckPw] = useState("");
-
-    useEffect(() => {
-        const fetchUser = async () => {
-          const res = await fetch("/api/auth/me");
-          if (res.ok) {
-            const data = await res.json();
-            setUser(data.user);
-          }
-        };
-        fetchUser();
-    }, []);
+    const [loading, setLoading] = useState(false);
+    const [err, setErr] = useState("");
 
     const handleChange = async (e: React.FormEvent) => {
         if (!bfPw) {
@@ -55,16 +46,19 @@ export default function Settings() {
         }
 
         e.preventDefault();
+        setLoading(true);
         const res = await fetch("/api/settings/changePassword", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ user, bfPw, afPw }),
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ bfPw, afPw }),
         });
+        setLoading(false);
     
         if (res.ok) {
-          router.push("/user/settings/done/password");
+            router.push("/user/settings/done/password");
         } else {
-          alert("パスワードの更新に失敗しました");
+            const data = await res.json();
+            setErr(data.message);
         }
     };
   
@@ -72,35 +66,38 @@ export default function Settings() {
         router.push("/user/setting");
     };
 
-    if (!user) return <p>認証中...</p>;
+    if (!userOmit) return <p>認証中...</p>;
 
     return (
-        <AuthGuard>
+        <AuthGuard onAuthSuccess={setUserOmit}>
             <div>
                 <h1>パスワードの変更</h1>
                 <p>パスワードの変更をします</p>
-                <PasswordInput 
+                <form onSubmit={handleChange}>
+                    <PasswordInput 
                           label="変更前パスワード"
                           placeholder="変更前パスワード"
                           value={bfPw}
                           onChange={(e) => setBfPw(e.target.value)}
                           required
-                />
-                <PasswordInput 
+                    />
+                    <PasswordInput 
                           label="変更後パスワード"
                           placeholder="変更後パスワード"
                           value={afPw}
                           onChange={(e) => setAfPw(e.target.value)}
                           required
-                />
-                <PasswordInput 
+                    />
+                    <PasswordInput 
                           label="変更後確認用パスワード"
                           placeholder="変更後確認用パスワード"
                           value={afCheckPw}
                           onChange={(e) => setAfCheckPw(e.target.value)}
                           required
-                />
-                <button onClick={handleChange}>変更</button>
+                    />
+                    <button type="submit" disabled={loading}>{loading ? "変更中..." : "変更"}</button>
+                    {err && <p>{err}</p>}
+                </form>
                 <button onClick={handleBackToOne}>前に戻る</button>
             </div>
         </AuthGuard>

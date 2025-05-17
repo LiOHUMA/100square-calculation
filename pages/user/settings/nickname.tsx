@@ -1,52 +1,46 @@
 //  @package      pages/user/settings/nickname.tsx
 //  @description  ニックネーム変更画面。
 //                変更したい新しいニックネームを入力する画面。
-//  @created      2025-04-27 by uma
+//  @created      2025-05-17 by uma
 //  @version      1.0.0
-//  @lastModified 2025-04-27 by uma
+//  @lastModified 2025-05-17 by uma
 
 // 変更履歴
 // ver 1.0.0 - 新規作成
 
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useRouter } from "next/router";
-import { User } from "../../../models/User";
+import { UserOmit } from "../../../models/User";
 import AuthGuard from "../../../components/AuthGuard";
 
 export default function Settings() {
     const router = useRouter();
-    const [user, setUser] = useState<User | null>(null);
+    const [userOmit, setUserOmit] = useState<UserOmit | null>(null);
     const [name, setName] = useState("");
-
-    useEffect(() => {
-        const fetchUser = async () => {
-          const res = await fetch("/api/auth/me");
-          if (res.ok) {
-            const data = await res.json();
-            setUser(data.user);
-          }
-        };
-        fetchUser();
-    }, []);
+    const [loading, setLoading] = useState(false);
+    const [err, setErr] = useState("");
 
     const handleChange = async (e: React.FormEvent) => {
         if (!name) {
-            alert("変更後のニックネームを入力してください");
-            return;
+          alert("変更後のニックネームを入力してください");
+          return;
         }
 
         e.preventDefault();
+        setLoading(true);
         const res = await fetch("/api/settings/changeNickname", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ user, name }),
+          body: JSON.stringify({ name }),
         });
+        setLoading(false);
     
         if (res.ok) {
           router.push("/user/settings/done/nickname");
         } else {
-          alert("ニックネームの更新に失敗しました");
+          const data = await res.json();
+          setErr(data.message);
         }
     };
   
@@ -54,16 +48,19 @@ export default function Settings() {
         router.push("/user/setting");
     };
 
-    if (!user) return <p>認証中...</p>;
+    if (!userOmit) return <p>認証中...</p>;
 
     return (
-        <AuthGuard>
+        <AuthGuard onAuthSuccess={setUserOmit}>
             <div>
                 <h1>ニックネームの変更</h1>
                 <p>ニックネームの変更をします</p>
-                <p>変更前のニックネームは「{user.name}」です</p>
-                <input type="input" placeholder="ニックネーム" value={name} onChange={(e) => setName(e.target.value)} required />
-                <button onClick={handleChange}>変更</button>
+                <p>変更前のニックネームは「{userOmit.name}」です</p>
+                <form onSubmit={handleChange}>
+                  <input type="input" placeholder="ニックネーム" value={name} onChange={(e) => setName(e.target.value)} required />
+                  <button type="submit" disabled={loading}>{loading ? "変更中..." : "変更"}</button>
+                  {err && <p>{err}</p>}
+                </form>
                 <button onClick={handleBackToOne}>前に戻る</button>
             </div>
         </AuthGuard>

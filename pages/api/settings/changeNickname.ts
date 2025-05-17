@@ -1,9 +1,9 @@
 //  @package      pages/api/settings/changeNickname.ts
 //  @description  ニックネームの変更機能。
 //                入力した新しいニックネームに変更をする。
-//  @created      2025-04-27 by uma
+//  @created      2025-05-14 by uma
 //  @version      1.0.0
-//  @lastModified 2025-04-27 by uma
+//  @lastModified 2025-05-14 by uma
 
 // 変更履歴
 // ver 1.0.0 - 新規作成
@@ -11,42 +11,30 @@
 
 
 import type { NextApiRequest, NextApiResponse } from "next";
-import { getUserById, changeNickname } from "../../../lib/userService";
-import jwt from "jsonwebtoken";
-import { serialize } from "cookie";
+import { changeNickname } from "../../../lib/userService";
+import { verify } from "jsonwebtoken";
+
+const JWT_SECRET = process.env.JWT_SECRET!;
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== "POST") {
     return res.status(405).json({ message: "Method Not Allowed" });
   }
 
-  const { user, name } = req.body;
+  const { name } = req.body;
 
-  if (!user || !name) {
+  if (!name) {
     return res.status(400).json({ message: "Invalid data" });
   }
 
   try {
-    const userData = await getUserById(user.id);
+    const token = req.cookies.token;
+    if (!token) return res.status(401).json({ message: "認証されていません" });
 
-    if (!userData) {
-      return res.status(401).json({ message: "ユーザーが存在しません" });
-    }
+    const decoded = verify(token, JWT_SECRET) as { id: string };
 
-    await changeNickname(user, name);
+    await changeNickname(decoded.id, name);
     
-    const newUserData = await getUserById(user.id);
-
-    const newToken = jwt.sign({ user: newUserData }, process.env.JWT_SECRET!, { expiresIn: "1h" });
-    
-    res.setHeader("Set-Cookie", serialize("token", newToken, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: "strict",
-      path: "/",
-      maxAge: 60 * 60,
-    }));
-
     return res.status(200).json({ message: "ニックネームを変更しました" });
 
   } catch (error) {
