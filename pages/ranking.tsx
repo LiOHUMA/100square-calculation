@@ -1,9 +1,9 @@
 //  @package      pages/ranking.tsx
 //  @description  ランキング画面。
 //                個人のランキングを表示する画面。
-//  @created      2025-05-17 by uma
+//  @created      2025-05-18 by uma
 //  @version      1.0.0
-//  @lastModified 2025-05-17 by uma
+//  @lastModified 2025-05-18 by uma
 
 // 変更履歴
 // ver 1.0.0 - 新規作成
