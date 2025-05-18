@@ -13,7 +13,7 @@ export default function ResultPage() {
   const [correctAnswers, setCorrectAnswers] = useState<number[][]>([]);
   const [topNumbers, setTopNumbers] = useState<number[]>([]);
   const [sideNumbers, setSideNumbers] = useState<number[]>([]);
-  const [operation, setOperation] = useState<string>("");
+  // const [operation, setOperation] = useState<string>("");
   const [elapsedTime, setElapsedTime] = useState<number | null>(null);
   const totalCount = 100;
 
@@ -25,14 +25,14 @@ export default function ResultPage() {
     );
     const topNumbers = JSON.parse(localStorage.getItem("topNumbers") || "[]");
     const sideNumbers = JSON.parse(localStorage.getItem("sideNumbers") || "[]");
-    const operation = localStorage.getItem("operation") || "";
+    // const operation = localStorage.getItem("operation") || "";
     const elapsedTime = localStorage.getItem("elapsedTime");
 
     setUserAnswers(userAnswers);
     setCorrectAnswers(correctAnswers);
     setTopNumbers(topNumbers);
     setSideNumbers(sideNumbers);
-    setOperation(operation);
+    // setOperation(operation);
     setElapsedTime(elapsedTime ? Number(elapsedTime) : null);
   }, []);
 
