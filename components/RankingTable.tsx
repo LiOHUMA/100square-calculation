@@ -19,6 +19,7 @@ export default function RankingTable({
     onRankingGetSuccess?: (rankingOmit: RankingOmit[]) => void;
 }) {
     const [rankingOmit, setRankingOmit] = useState<RankingOmit[]>([]);
+    const [loading, setLoading] = useState(true);
     const router = useRouter();
 
     useEffect(() => {
@@ -29,12 +30,15 @@ export default function RankingTable({
                 const data = await res.json();
                 setRankingOmit(data.RankingOmit);
                 onRankingGetSuccess?.(data.RankingOmit);
+                setLoading(false);
             } else {
                 router.push("/menu?session=getRankingFaild");
             }
         };
         getRanking();
     },[]);
+
+    if (loading) return <p>取得中...</p>;
 
     return (
         <table>
