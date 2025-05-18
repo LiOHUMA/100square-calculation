@@ -13,7 +13,7 @@ import { useRouter } from "next/router";
 import AuthGuard from "../components/AuthGuard";
 import RankingTable from "../components/RankingTable";
 
-export default function Menu() {
+export default function Ranking() {
   const router = useRouter();
 
   const handleBackToMenu = () => {

@@ -1,21 +1,22 @@
 //  @package      pages/menu.tsx
 //  @description  メニュー画面。
 //                各画面に遷移するための画面。
-//  @created      2025-05-14 by uma
+//  @created      2025-05-18 by uma
 //  @version      1.0.0
-//  @lastModified 2025-05-14 by uma
+//  @lastModified 2025-05-18 by uma
 
 // 変更履歴
 // ver 1.0.0 - 新規作成
 
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { UserOmit } from "../models/User";
 import AuthGuard from "../components/AuthGuard";
 
 export default function Menu() {
   const [userOmit, setUserOmit] = useState<UserOmit | null>(null);
+  const [err, setErr] = useState("");
   const router = useRouter();
 
   const handleUserManage = () => {
@@ -23,7 +24,7 @@ export default function Menu() {
   };
 
   const handleScoreManage = () => {
-    router.push("/admin/score");
+    router.push("/admin/allRanking");
   };
 
   const handleCalculation = () => {
@@ -43,6 +44,12 @@ export default function Menu() {
     router.push("/login");
   };
 
+  useEffect(() => {
+    if (router.query.session === "getRankingFaild"){
+      setErr("ランキングの取得に失敗しました。")
+    }
+  }, [router.query.session]);
+
   return (
     <AuthGuard onAuthSuccess={setUserOmit}>
       {userOmit ? (
@@ -58,6 +65,8 @@ export default function Menu() {
         <button style={{display: [0, 1].includes(userOmit.role) ? "inline-block" : "none"}} onClick={handleSetting}>ユーザ設定</button>
 
         <button onClick={handleLogout}>ログアウト</button>
+
+        {err && <p>{err}</p>}
       </div>
       ) : (
         <p>認証中...</p>

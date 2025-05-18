@@ -10,8 +10,8 @@
 
 
 import { db } from "./firebase";
-import { doc, getDocs, setDoc, collection  } from "firebase/firestore";
-import { Ranking, RankingOmit } from "../models/Ranking";
+import { doc, getDocs, setDoc, collection, getDoc  } from "firebase/firestore";
+import { Ranking, RankingOmit, RankingWithName } from "../models/Ranking";
 
 /**
  * 個人ランキングデータの取得
@@ -34,21 +34,26 @@ export const getRankingsById  = async ( id: string ): Promise<RankingOmit[] | nu
 /**
  * 全ランキングデータの取得
 */
-export const getAllUserRankings = async (): Promise<Ranking[]> => {
+export const getAllUserRankings = async (): Promise<RankingWithName[]> => {
   const scoresCol = collection(db, "scores");
   const scoresSnap = await getDocs(scoresCol);
 
-  const allRankings: Ranking[] = [];
+  const allRankings: RankingWithName[] = [];
 
   for (const userDoc of scoresSnap.docs) {
     const userId = userDoc.id;
+
+    const userRef = doc(db, "users", userId);
+    const userSnap = await getDoc(userRef);
+    const nickname = userSnap.exists()? userSnap.data().name || "名無し": "不明";
+
     const rankingsCol = collection(db, "scores", userId, "rankings");
     const rankingsSnap = await getDocs(rankingsCol);
 
     rankingsSnap.forEach((doc) => {
       const data = doc.data();
       allRankings.push({
-        id: userId,
+        name: nickname,
         rank: doc.id,
         correctAnswers: data.correctAnswers,
         timeSpent: data.timeSpent,
