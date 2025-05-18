@@ -9,9 +9,7 @@
 // ver 1.0.0 - 新規作成
 
 
-import { useState } from "react";
 import { useRouter } from "next/router";
-import { RankingOmit } from "../models/Ranking";
 import AuthGuard from "../components/AuthGuard";
 import RankingTable from "../components/RankingTable";
 
