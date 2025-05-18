@@ -23,3 +23,11 @@ export interface RankingOmit {
   timeSpent: number;
   date: Date;
 }
+
+export interface RankingWithName {
+  name: string;
+  rank: string;
+  correctAnswers: number;
+  timeSpent: number;
+  date: Date;
+}
