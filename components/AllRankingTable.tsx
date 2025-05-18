@@ -12,7 +12,6 @@
 import React, { useEffect, useState } from "react";
 import { RankingWithName } from "../models/Ranking";
 import { useRouter } from "next/router";
-import { set } from "mongoose";
 
 export default function AllRankingTable({
     onAllRankingGetSuccess
