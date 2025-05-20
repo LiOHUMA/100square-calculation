@@ -1,9 +1,9 @@
 //  @package      lib/userService.ts
 //  @description  ユーザライブラリ。
 //                ユーザの情報取得、登録する機能。
-//  @created      2025-05-14 by uma
+//  @created      2025-05-20 by uma
 //  @version      1.0.0
-//  @lastModified 2025-05-14 by uma
+//  @lastModified 2025-05-20 by uma
 
 // 変更履歴
 // ver 1.0.0 - 新規作成
@@ -11,7 +11,7 @@
 
 import { db } from "./firebase";
 import { doc, getDoc, setDoc, updateDoc, Timestamp  } from "firebase/firestore";
-import { User } from "../models/User";
+import { User, UserRegister } from "../models/User";
 import bcrypt from "bcryptjs";
 
 export const getUserById = async (id: string): Promise<User | null> => {
@@ -20,6 +20,9 @@ export const getUserById = async (id: string): Promise<User | null> => {
   if (!snap.exists()) return null;
 
   const data = snap.data();
+
+  if (data.deleted === 1) return null;
+
   return {
     id: snap.id,
     ...data,
@@ -29,9 +32,9 @@ export const getUserById = async (id: string): Promise<User | null> => {
 };
 
 // 新規ユーザーを保存
-export const createUser = async (user: User) => {
-  const hashedPassword = await bcrypt.hash(user.password, 10); // 🔐 パスワードをハッシュ化
-  const {id, ...userRegist} = user
+export const createUser = async (userRegister: UserRegister) => {
+  const {id, password, ...userRegist} = userRegister
+  const hashedPassword = await bcrypt.hash(password, 10); // 🔐 パスワードをハッシュ化
   await setDoc(doc(db, "users", id), {
     ...userRegist,
     password: hashedPassword,

@@ -1,9 +1,9 @@
 //  @package      pages/user/settings/nickname.tsx
 //  @description  ニックネーム変更完了画面。
 //                新しいニックネームに変更できたことを知らせる画面。
-//  @created      2025-05-14 by uma
+//  @created      2025-05-20 by uma
 //  @version      1.0.0
-//  @lastModified 2025-05-14 by uma
+//  @lastModified 2025-05-20 by uma
 
 // 変更履歴
 // ver 1.0.0 - 新規作成
@@ -14,7 +14,7 @@ import { useRouter } from "next/router";
 import { UserOmit } from "../../../../models/User";
 import AuthGuard from "../../../../components/AuthGuard";
 
-export default function Settings() {
+export default function DoneNickname() {
     const router = useRouter();
     const [userOmit, setUserOmit] = useState<UserOmit | null>(null);
 
