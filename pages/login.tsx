@@ -1,9 +1,9 @@
 //  @package      pages/login.tsx
 //  @description  ログイン画面。
 //                ユーザIDとパスワードを入力し、ログインする画面。
-//  @created      2025-05-14 by uma
+//  @created      2025-05-20 by uma
 //  @version      1.0.0
-//  @lastModified 2025-05-14 by uma
+//  @lastModified 2025-05-20 by uma
 
 // 変更履歴
 // ver 1.0.0 - 新規作成
@@ -28,13 +28,13 @@ export default function Login() {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ id, password }),
     });
-    setLoading(false);
 
     if (res.ok) {
       router.push("/menu"); // メニュー画面へ遷移
     } else {
       const data = await res.json();
       setErr(data.message || "ログインに失敗しました");
+      setLoading(false);
     }
   };
 

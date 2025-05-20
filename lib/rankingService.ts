@@ -45,7 +45,12 @@ export const getAllUserRankings = async (): Promise<RankingWithName[]> => {
 
     const userRef = doc(db, "users", userId);
     const userSnap = await getDoc(userRef);
-    const nickname = userSnap.exists()? userSnap.data().name || "名無し": "不明";
+
+    if(!userSnap.exists() || userSnap.data().deleted === 1){
+      continue;
+    }
+
+    const nickname = userSnap.data().name || "名無し";
 
     const rankingsCol = collection(db, "scores", userId, "rankings");
     const rankingsSnap = await getDocs(rankingsCol);

@@ -7,7 +7,6 @@
 
 // 変更履歴
 // ver 1.0.0 - 新規作成
-// ver 1.0.1 - パスワード変更機能作成に伴い一部見直し
 
 
 import type { NextApiRequest, NextApiResponse } from "next";

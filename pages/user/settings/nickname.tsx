@@ -1,9 +1,9 @@
 //  @package      pages/user/settings/nickname.tsx
 //  @description  ニックネーム変更画面。
 //                変更したい新しいニックネームを入力する画面。
-//  @created      2025-05-17 by uma
+//  @created      2025-05-20 by uma
 //  @version      1.0.0
-//  @lastModified 2025-05-17 by uma
+//  @lastModified 2025-05-20 by uma
 
 // 変更履歴
 // ver 1.0.0 - 新規作成
@@ -14,7 +14,7 @@ import { useRouter } from "next/router";
 import { UserOmit } from "../../../models/User";
 import AuthGuard from "../../../components/AuthGuard";
 
-export default function Settings() {
+export default function ChangeNickname() {
     const router = useRouter();
     const [userOmit, setUserOmit] = useState<UserOmit | null>(null);
     const [name, setName] = useState("");
@@ -34,13 +34,13 @@ export default function Settings() {
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ name }),
         });
-        setLoading(false);
     
         if (res.ok) {
           router.push("/user/settings/done/nickname");
         } else {
           const data = await res.json();
           setErr(data.message);
+          setLoading(false);
         }
     };
   

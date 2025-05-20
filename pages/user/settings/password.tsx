@@ -1,9 +1,9 @@
 //  @package      pages/user/settings/password.tsx
 //  @description  パスワード変更画面。
 //                現在のパスワードと新しいパスワードを入力する画面。
-//  @created      2025-04-25 by uma
+//  @created      2025-05-20 by uma
 //  @version      1.0.0
-//  @lastModified 2025-04-25 by uma
+//  @lastModified 2025-05-20 by uma
 
 // 変更履歴
 // ver 1.0.0 - 新規作成
@@ -15,7 +15,7 @@ import { UserOmit } from "../../../models/User";
 import AuthGuard from "../../../components/AuthGuard";
 import PasswordInput from "../../../components/PasswordInput";
 
-export default function Settings() {
+export default function ChangePassword() {
     const router = useRouter();
     const [userOmit, setUserOmit] = useState<UserOmit | null>(null);
     const [bfPw, setBfPw] = useState("");
@@ -52,13 +52,13 @@ export default function Settings() {
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ bfPw, afPw }),
         });
-        setLoading(false);
     
         if (res.ok) {
             router.push("/user/settings/done/password");
         } else {
             const data = await res.json();
             setErr(data.message);
+            setLoading(false);
         }
     };
   
