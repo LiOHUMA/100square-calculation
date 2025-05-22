@@ -26,10 +26,19 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         const user = await getUserById(decoded.id);
         if(!user) return res.status(404).json({ message: "ユーザが存在しません" });
 
-        if(user.role !== 0) return res.status(404).json({ message: "ユーザに権限がありません" });
+        if(user.role !== 0) return res.status(403).json({ message: "ユーザに権限がありません" });
 
         const newUser = req.body;
         if(!newUser) return res.status(400).json({ message: "登録したいユーザ情報を入力してください" });
+
+        if(!newUser.id || !newUser.name || !newUser.password || newUser.grade === undefined || newUser.role === undefined){
+            return res.status(400).json({ message: "全てのフィールドを入力してください" });
+        }
+
+        const existingUser = await getUserById(newUser.id);
+        if (existingUser) {
+            return res.status(400).json({ message: "このIDは既に使用されています" });
+        }
 
         await createUser(newUser);
 
