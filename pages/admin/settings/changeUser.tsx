@@ -1,4 +1,4 @@
-//  @package      pages/admin/settings/createUser.tsx
+//  @package      pages/admin/settings/changeUser.tsx
 //  @description  新規ユーザ作成画面。
 //                ユーザ作成画面。
 //  @created      2025-05-20 by uma

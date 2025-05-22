@@ -1,9 +1,9 @@
 //  @package      pages/api/user/create.ts
 //  @description  新規ユーザ作成機能。
 //                新規ユーザを作成する。
-//  @created      2025-05-20 by uma
+//  @created      2025-05-22 by uma
 //  @version      1.0.0
-//  @lastModified 2025-05-20 by uma
+//  @lastModified 2025-05-22 by uma
 
 // 変更履歴
 // ver 1.0.0 - 新規作成
