@@ -55,6 +55,7 @@ export default function CreateUser(){
             const data = await res.json();
             setErr(data.message || "登録に失敗しました");
             setLoading(false);
+            setIsConfirm(false);
         }
     }
 
@@ -106,8 +107,9 @@ export default function CreateUser(){
                         <p>ニックネーム：{newUser.name}</p>
                         <p>学年：{newUser.grade}</p>
                         <p>役割：{newUser.role === 0 ? "管理者" : "生徒"}</p>
-                        <p>パスワード：{Array(newUser.password.length).fill("*").join("")}</p>
+                        <p>パスワード：{Array(newUser.password.length).fill("●").join("")}</p>
                         <button type="submit" disabled={loading}>{loading ? "登録中..." : "登録"}</button>
+                        {err && <p>{err}</p>}
                     </form>
                     <button onClick={() => setIsConfirm(false)}>前に戻る</button>
                 </div>

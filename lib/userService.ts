@@ -1,17 +1,17 @@
 //  @package      lib/userService.ts
 //  @description  ユーザライブラリ。
 //                ユーザの情報取得、登録する機能。
-//  @created      2025-05-20 by uma
+//  @created      2025-05-25 by uma
 //  @version      1.0.0
-//  @lastModified 2025-05-20 by uma
+//  @lastModified 2025-05-25 by uma
 
 // 変更履歴
 // ver 1.0.0 - 新規作成
 
 
 import { db } from "./firebase";
-import { doc, getDoc, setDoc, updateDoc, Timestamp  } from "firebase/firestore";
-import { User, UserRegister } from "../models/User";
+import { doc, getDoc, setDoc, updateDoc, Timestamp, collection, getDocs  } from "firebase/firestore";
+import { User, UserRegister, UserUpdater } from "../models/User";
 import bcrypt from "bcryptjs";
 
 export const getUserById = async (id: string): Promise<User | null> => {
@@ -64,3 +64,61 @@ export const changePassword = async (id: string, trgPassword: string) => {
     updatedAt: Timestamp.now(),
   });
 }
+
+/**
+ * 全ユーザ取得
+*/
+export const getAllUserData = async (): Promise<UserUpdater[]> => {
+  const usersCol = collection(db, "users");
+  const usersSnap = await getDocs(usersCol);
+
+  const allUsers: UserUpdater[] = [];
+
+  usersSnap.forEach((doc) => {
+    const data = doc.data();
+    if(data.deleted !== 1){
+      allUsers.push({
+        id: doc.id,
+        name: data.name,
+        grade: data.grade,
+        role: data.role
+      });
+    }
+  });
+
+  return allUsers;
+}
+
+/**
+ * ユーザ情報更新
+ */
+export const updateUser = async (
+  id: string,
+  updateFields: {
+    name?: string;
+    grade?: number;
+    role?: number;
+    password?: string;
+  },
+  updateFlg: {
+    nameFlg: boolean;
+    gradeFlg: boolean;
+    roleFlg: boolean;
+    passwordFlg: boolean;
+  }
+) => {
+  const ref = doc(db, "users", id);
+  const updateData: any = { updatedAt: Timestamp.now() };
+
+  if (updateFlg.nameFlg) updateData.name = updateFields.name
+  if (updateFlg.gradeFlg) updateData.grade = updateFields.grade
+  if (updateFlg.roleFlg) updateData.role = updateFields.role
+
+  if (updateFlg.passwordFlg && updateFields.password && updateFields.password.trim() !== "") {
+    const hashedPassword = await bcrypt.hash(updateFields.password, 10);
+    updateData.password = hashedPassword;
+    updateData.hashFlg = 1;
+  }
+
+  await updateDoc(ref, updateData);
+};
