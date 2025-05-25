@@ -35,7 +35,7 @@ export default function AuthGuard({
       }
     };
     checkAuth();
-  }, []);
+  }, [router, onAuthSuccess]);
 
   if (loading) return <p>認証中...</p>;
 

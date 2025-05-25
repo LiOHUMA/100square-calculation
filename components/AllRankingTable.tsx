@@ -1,9 +1,9 @@
 //  @package      components/AllRankingTable.tsx
 //  @description  全ランキングテーブル共通機能。
 //                全てのユーザのランキングテーブルを作成する。
-//  @created      2025-05-18 by uma
+//  @created      2025-05-22 by uma
 //  @version      1.0.0
-//  @lastModified 2025-05-18 by uma
+//  @lastModified 2025-05-22 by uma
 
 // 変更履歴
 // ver 1.0.0 - 新規作成
@@ -13,11 +13,7 @@ import React, { useEffect, useState } from "react";
 import { RankingWithName } from "../models/Ranking";
 import { useRouter } from "next/router";
 
-export default function AllRankingTable({
-    onAllRankingGetSuccess
-}: {
-    onAllRankingGetSuccess?: (ranking: RankingWithName[]) => void;
-}) {
+export default function AllRankingTable() {
     const [ranking, setRanking] = useState<RankingWithName[]>([]);
     const [loading, setLoading] = useState(true);
     const [selectedName, setSelectedName] = useState<string>("全体");
@@ -30,14 +26,13 @@ export default function AllRankingTable({
             if(res.ok){
                 const data = await res.json();
                 setRanking(data.Ranking);
-                onAllRankingGetSuccess?.(data.Ranking);
                 setLoading(false);
             } else {
                 router.push("/menu?session=getRankingFaild");
             }
         };
         getAllRanking();
-    },[]);
+    },[router]);
 
     if (loading) return <p>取得中...</p>;
 
@@ -57,7 +52,7 @@ export default function AllRankingTable({
                     {uniqueNames.map((name) => (
                         <option key={name} value={name}>{name}</option>
                     ))}
-                </select>
+            </select>
             <table>
                 <thead>
                     <tr>

@@ -36,7 +36,7 @@ export default function RankingTable({
             }
         };
         getRanking();
-    },[]);
+    },[router, onRankingGetSuccess]);
 
     if (loading) return <p>取得中...</p>;
 

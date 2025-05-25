@@ -1,9 +1,9 @@
-//  @package      pages/admin/settings/done/createUser.tsx
-//  @description  新規ユーザ作成完了画面。
-//                新しいユーザを登録できたことを知らせる画面。
-//  @created      2025-05-22 by uma
+//  @package      pages/admin/settings/done/updateUser.tsx
+//  @description  ユーザ情報変更完了画面。
+//                ユーザの情報を変更できたことを知らせる画面。
+//  @created      2025-05-25 by uma
 //  @version      1.0.0
-//  @lastModified 2025-05-22 by uma
+//  @lastModified 2025-05-25 by uma
 
 // 変更履歴
 // ver 1.0.0 - 新規作成
@@ -25,8 +25,8 @@ export default function DoneCreateUser() {
         }
     }, []);    
 
-    const handleCreateUser = () => {
-        router.push("/admin/settings/createUser");
+    const handleUpdateUser = () => {
+        router.push("/admin/settings/updateUser");
     };
 
     const handleBackToSetting = () => {
@@ -40,8 +40,8 @@ export default function DoneCreateUser() {
     return (
         <AuthGuard>
             <div>
-                <h1>新しいユーザ「{name}」の登録が完了しました</h1>
-                <button onClick={handleCreateUser}>続けて登録する</button>
+                <h1>ユーザ「{name}」の情報変更が完了しました</h1>
+                <button onClick={handleUpdateUser}>続けて変更する</button>
                 <button onClick={handleBackToSetting}>ユーザ管理へ戻る</button>
                 <button onClick={handleBackToMenu}>メニューへ戻る</button>
             </div>
