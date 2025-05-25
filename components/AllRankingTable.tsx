@@ -32,7 +32,7 @@ export default function AllRankingTable() {
             }
         };
         getAllRanking();
-    },[]);
+    },[router]);
 
     if (loading) return <p>取得中...</p>;
 
