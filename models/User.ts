@@ -5,6 +5,8 @@
 //  @version      1.0.0
 //  @lastModified 2025-05-25 by uma
 
+import { Timestamp } from "firebase/firestore";
+
 // 変更履歴
 // ver 1.0.0 - 新規作成
 
@@ -38,4 +40,13 @@ export interface UserUpdater {
   name: string;
   grade: number;
   role: number;
+}
+
+export interface UpdateData {
+  updatedAt: Timestamp;
+  name?: string;
+  grade?: number;
+  role?: number;
+  password?: string;
+  hashFlg?: number;
 }

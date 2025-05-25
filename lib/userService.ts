@@ -11,7 +11,7 @@
 
 import { db } from "./firebase";
 import { doc, getDoc, setDoc, updateDoc, Timestamp, collection, getDocs  } from "firebase/firestore";
-import { User, UserRegister, UserUpdater } from "../models/User";
+import { User, UserRegister, UserUpdater, UpdateData } from "../models/User";
 import bcrypt from "bcryptjs";
 
 export const getUserById = async (id: string): Promise<User | null> => {
@@ -108,7 +108,7 @@ export const updateUser = async (
   }
 ) => {
   const ref = doc(db, "users", id);
-  const updateData: any = { updatedAt: Timestamp.now() };
+  const updateData: Partial<UpdateData> = { updatedAt: Timestamp.now() };
 
   if (updateFlg.nameFlg) updateData.name = updateFields.name
   if (updateFlg.gradeFlg) updateData.grade = updateFields.grade
