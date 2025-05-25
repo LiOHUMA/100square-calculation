@@ -67,7 +67,7 @@ export default function UpdateUser(){
             }
         };
         getAllUserName();
-    },[]);
+    },[router]);
 
     const handleSelectUser = async(e: React.FormEvent) => {
         e.preventDefault();
@@ -121,32 +121,25 @@ export default function UpdateUser(){
             e.preventDefault();
             setLoading(true);
 
-            try{
+            const updateData: Partial<UserUpdaterWithPassword> = {};
 
-                const updateData: any = {};
-
-                if (userUpdaterFlg.nameFlg) updateData.name = userUpdater.name;
-                if (userUpdaterFlg.gradeFlg) updateData.grade = userUpdater.grade;
-                if (userUpdaterFlg.roleFlg) updateData.role = userUpdater.role;
-                if (userUpdaterFlg.passwordFlg) updateData.password = userUpdater.password;
+            if (userUpdaterFlg.nameFlg) updateData.name = userUpdater.name;
+            if (userUpdaterFlg.gradeFlg) updateData.grade = userUpdater.grade;
+            if (userUpdaterFlg.roleFlg) updateData.role = userUpdater.role;
+            if (userUpdaterFlg.passwordFlg) updateData.password = userUpdater.password;
             
-                const res = await fetch("/api/user/update", {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ id: bfUserUpdater.id, updateData, userUpdaterFlg }),
-                });
+            const res = await fetch("/api/user/update", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ id: bfUserUpdater.id, updateData, userUpdaterFlg }),
+            });
     
-                if (res.ok) {
-                    sessionStorage.setItem("name", JSON.stringify(userUpdater.name));
-                    router.push("/admin/settings/done/updateUser");
-                } else {
-                    const data = await res.json();
-                    setErr(data.message || "変更に失敗しました");
-                    setLoading(false);
-                    setIsConfirm(false);
-                }
-            } catch (error) {
-                setErr("変更に失敗しました");
+            if (res.ok) {
+                sessionStorage.setItem("name", JSON.stringify(userUpdater.name));
+                router.push("/admin/settings/done/updateUser");
+            } else {
+                const data = await res.json();
+                setErr(data.message || "変更に失敗しました");
                 setLoading(false);
                 setIsConfirm(false);
             }
