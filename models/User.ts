@@ -35,7 +35,7 @@ export interface UserRegister {
   role: number;
 }
 
-export interface UserUpdater {
+export interface UserChanger {
   id: string;
   name: string;
   grade: number;

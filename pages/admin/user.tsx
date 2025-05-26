@@ -1,9 +1,9 @@
 //  @package      pages/admin/user.tsx
 //  @description  ユーザ管理画面。
 //                ユーザ作成、変更の選択画面。
-//  @created      2025-05-22 by uma
+//  @created      2025-05-26 by uma
 //  @version      1.0.0
-//  @lastModified 2025-05-22 by uma
+//  @lastModified 2025-05-26 by uma
 
 // 変更履歴
 // ver 1.0.0 - 新規作成
@@ -25,6 +25,10 @@ export default function UserSettings() {
         router.push("/admin/settings/updateUser");
     };
 
+    const handleDeleteUser = () => {
+        router.push("/admin/settings/deleteUser");
+    };
+
     const handleBackToMenu = () => {
         router.push("/menu");
     };
@@ -41,6 +45,7 @@ export default function UserSettings() {
                 <h1>ユーザ管理</h1>
                 <button onClick={handleCreateUser}>新規作成</button>
                 <button onClick={handleUpdateUser}>ユーザ情報変更</button>
+                <button onClick={handleDeleteUser}>ユーザ削除</button>
                 <button onClick={handleBackToMenu}>メニューへ戻る</button>
                 {err && <p>{err}</p>}
             </div>
