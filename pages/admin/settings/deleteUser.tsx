@@ -68,6 +68,10 @@ export default function DeleteUser(){
 
     const handleDeleteUser = async(e: React.FormEvent) => {
             e.preventDefault();
+
+            const isConfirmed = window.confirm(`本当に「${userDeleter.name}」を削除しますか？`);
+            if (!isConfirmed) return;
+
             setLoading(true);
             
             const res = await fetch("/api/user/delete", {
