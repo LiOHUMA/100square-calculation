@@ -1,9 +1,9 @@
 //  @package      lib/userService.ts
 //  @description  ユーザライブラリ。
 //                ユーザの情報取得、登録する機能。
-//  @created      2025-05-25 by uma
+//  @created      2025-05-26 by uma
 //  @version      1.0.0
-//  @lastModified 2025-05-25 by uma
+//  @lastModified 2025-05-26 by uma
 
 // 変更履歴
 // ver 1.0.0 - 新規作成
@@ -11,7 +11,7 @@
 
 import { db } from "./firebase";
 import { doc, getDoc, setDoc, updateDoc, Timestamp, collection, getDocs  } from "firebase/firestore";
-import { User, UserRegister, UserUpdater, UpdateData } from "../models/User";
+import { User, UserRegister, UserChanger, UpdateData } from "../models/User";
 import bcrypt from "bcryptjs";
 
 export const getUserById = async (id: string): Promise<User | null> => {
@@ -68,11 +68,11 @@ export const changePassword = async (id: string, trgPassword: string) => {
 /**
  * 全ユーザ取得
 */
-export const getAllUserData = async (): Promise<UserUpdater[]> => {
+export const getAllUserData = async (): Promise<UserChanger[]> => {
   const usersCol = collection(db, "users");
   const usersSnap = await getDocs(usersCol);
 
-  const allUsers: UserUpdater[] = [];
+  const allUsers: UserChanger[] = [];
 
   usersSnap.forEach((doc) => {
     const data = doc.data();
@@ -122,3 +122,15 @@ export const updateUser = async (
 
   await updateDoc(ref, updateData);
 };
+
+/**
+ * ユーザ削除
+ */
+// パスワード変更
+export const deleteUser = async (id: string) => {
+  const ref = doc(db, "users", id);
+  await updateDoc(ref, {
+    deleted: 1,
+    updatedAt: Timestamp.now()
+  });
+}

@@ -1,6 +1,6 @@
 //  @package      pages/admin/settings/updateSelectUser.tsx
-//  @description  ユーザ情報変更 対象ユーザ選択画面。
-//                ユーザ情報を変更する対象のユーザを選択する画面。
+//  @description  ユーザ情報変更画面。
+//                ユーザ情報を変更する画面。
 //  @created      2025-05-25 by uma
 //  @version      1.0.0
 //  @lastModified 2025-05-25 by uma
@@ -11,15 +11,15 @@
 
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import { UserUpdater } from "../../../models/User"
+import { UserChanger } from "../../../models/User"
 import AuthGuard from "../../../components/AuthGuard";
 import PasswordInput from "../../../components/PasswordInput";
 
 export default function UpdateUser(){
 
-    type UserUpdaterWithPassword = UserUpdater & { password: string };
+    type UserUpdaterWithPassword = UserChanger & { password: string };
 
-    const[userUpdaters, setUserUpdaters] = useState<UserUpdater[]>([]);
+    const[userUpdaters, setUserUpdaters] = useState<UserChanger[]>([]);
     const [isFetchingUserList, setIsFetchingUserList] = useState(true);
     const [isUpdater, setIsUpdater] = useState(false);
     const [isConfirm, setIsConfirm] = useState(false);

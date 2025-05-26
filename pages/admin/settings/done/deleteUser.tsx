@@ -1,9 +1,9 @@
-//  @package      pages/admin/settings/done/updateUser.tsx
-//  @description  ユーザ情報変更完了画面。
-//                ユーザの情報を変更できたことを知らせる画面。
-//  @created      2025-05-25 by uma
+//  @package      pages/admin/settings/done/deleteUser.tsx
+//  @description  ユーザ削除完了画面。
+//                ユーザを削除できたことを知らせる画面。
+//  @created      2025-05-26 by uma
 //  @version      1.0.0
-//  @lastModified 2025-05-25 by uma
+//  @lastModified 2025-05-26 by uma
 
 // 変更履歴
 // ver 1.0.0 - 新規作成
@@ -13,7 +13,7 @@ import { useRouter } from "next/router";
 import AuthGuard from "../../../../components/AuthGuard";
 import { useEffect, useState } from "react";
 
-export default function DoneUpdateUser() {
+export default function DoneDeleteUser() {
     const router = useRouter();
     const [name, setName] = useState("");
 
@@ -25,8 +25,8 @@ export default function DoneUpdateUser() {
         }
     }, []);    
 
-    const handleUpdateUser = () => {
-        router.push("/admin/settings/updateUser");
+    const handledeleteUser = () => {
+        router.push("/admin/settings/deleteUser");
     };
 
     const handleBackToSetting = () => {
@@ -40,8 +40,8 @@ export default function DoneUpdateUser() {
     return (
         <AuthGuard>
             <div>
-                <h1>ユーザ「{name}」の情報変更が完了しました</h1>
-                <button onClick={handleUpdateUser}>続けて変更する</button>
+                <h1>ユーザ「{name}」の削除が完了しました</h1>
+                <button onClick={handledeleteUser}>続けてユーザ削除する</button>
                 <button onClick={handleBackToSetting}>ユーザ管理へ戻る</button>
                 <button onClick={handleBackToMenu}>メニューへ戻る</button>
             </div>
