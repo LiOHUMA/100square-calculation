@@ -1,22 +1,24 @@
 //  @package      components/AllRankingTable.tsx
 //  @description  全ランキングテーブル共通機能。
 //                全てのユーザのランキングテーブルを作成する。
-//  @created      2025-05-22 by uma
+//  @created      2025-05-31 by uma
 //  @version      1.0.0
-//  @lastModified 2025-05-22 by uma
+//  @lastModified 2025-05-31 by uma
 
 // 変更履歴
 // ver 1.0.0 - 新規作成
 
 
 import React, { useEffect, useState } from "react";
-import { RankingWithName } from "../models/Ranking";
+import { RankingWithModeWithName } from "../models/Ranking";
 import { useRouter } from "next/router";
+import { RANKING_LABELS } from "../lib/constants/ranking";
 
 export default function AllRankingTable() {
-    const [ranking, setRanking] = useState<RankingWithName[]>([]);
+    const [ranking, setRanking] = useState<RankingWithModeWithName[]>([]);
     const [loading, setLoading] = useState(true);
     const [selectedName, setSelectedName] = useState<string>("全体");
+    const [selectedMode, setSelectedMode] = useState<string>("全体");
     const router = useRouter();
 
     useEffect(() => {
@@ -38,7 +40,8 @@ export default function AllRankingTable() {
 
     const uniqueNames = Array.from(new Set(ranking.map(r => r.name)));
 
-    const filteredRanking = selectedName === "全体" ? ranking: ranking.filter(r => r.name === selectedName);
+    const filteredByNameRanking = selectedName === "全体" ? ranking: ranking.filter(r => r.name === selectedName);
+    const filteredByModeRanking = selectedMode === "全体" ? filteredByNameRanking: filteredByNameRanking.filter(r => r.mode === selectedMode);
 
     return (
         <div>
@@ -53,10 +56,22 @@ export default function AllRankingTable() {
                         <option key={name} value={name}>{name}</option>
                     ))}
             </select>
+            <label htmlFor="mode-filter">モードで絞り込み：</label>
+            <select
+                id="mode-filter"
+                value={selectedMode}
+                onChange={(e) => setSelectedMode(e.target.value)}
+                >
+                <option value="全体">全体</option>
+                {Object.entries(RANKING_LABELS).map(([key, label]) => (
+                    <option key={key} value={key}>{label}</option>
+                ))}
+            </select>
             <table>
                 <thead>
                     <tr>
                         <th>名前</th>
+                        <th>モード</th>
                         <th>ランク</th>
                         <th>正解数</th>
                         <th>時間（秒）</th>
@@ -64,9 +79,10 @@ export default function AllRankingTable() {
                     </tr>
                 </thead>
                 <tbody>
-                    {filteredRanking.map((r, i) => (
+                    {filteredByModeRanking.map((r, i) => (
                         <tr key={`${r.name}-${r.rank}-${i}`}>
                             <td>{r.name}</td>
+                            <td>{RANKING_LABELS[r.mode]}</td>
                             <td>{r.rank}</td>
                             <td>{r.correctAnswers}</td>
                             <td>{r.timeSpent}</td>

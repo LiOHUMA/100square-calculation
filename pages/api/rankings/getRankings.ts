@@ -1,9 +1,9 @@
 //  @package      pages/api/rankings/getRankings.ts
 //  @description  ランキング取得機能。
 //                表示するのに必要なランキング情報を取得する。
-//  @created      2025-05-18 by uma
+//  @created      2025-05-31 by uma
 //  @version      1.0.0
-//  @lastModified 2025-05-18 by uma
+//  @lastModified 2025-05-31 by uma
 
 // 変更履歴
 // ver 1.0.0 - 新規作成
@@ -23,10 +23,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     
         const decoded = verify(token, JWT_SECRET) as { id: string };
 
-        const rankingOmit = await getRankingsById(decoded.id);
-        if (!rankingOmit) return res.status(404).json({ message: "ランキングが見つかりません" });
+        const rankings = await getRankingsById(decoded.id);
+        if (!rankings) return res.status(404).json({ message: "ランキングが見つかりません" });
     
-        return res.status(200).json({RankingOmit: rankingOmit});
+        return res.status(200).json({Rankings: rankings});
 
     } catch (error) {
         console.error("エラー:", error);
