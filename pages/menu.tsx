@@ -39,6 +39,10 @@ export default function Menu() {
     router.push("/user/setting");
   };
 
+  const handleGameSetting = () => {
+    router.push("/calc/setting");
+  };
+
   const handleLogout = async () => {
     await fetch("/api/auth/logout", { method: "POST" });
     router.push("/login");
@@ -63,6 +67,8 @@ export default function Menu() {
         <button onClick={handleRanking}>ランキング</button>
 
         <button style={{display: [0, 1].includes(userOmit.role) ? "inline-block" : "none"}} onClick={handleSetting}>ユーザ設定</button>
+
+        <button style={{display: [0].includes(userOmit.role) ? "inline-block" : "none"}} onClick={handleGameSetting}>百ます計算設定</button>
 
         <button onClick={handleLogout}>ログアウト</button>
 
