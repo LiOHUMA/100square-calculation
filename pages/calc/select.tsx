@@ -14,7 +14,7 @@ import AuthGuard from "../../components/AuthGuard";
 import { MODE_COLLECTIONS, MODE_LABELS, MODE_SYMBOL } from "../../lib/constants/calc";
 
 
-export default function modeSelect() {
+export default function ModeSelect() {
     const router = useRouter();
 
     const handleModeSelect = (mode: string) => {
