@@ -10,11 +10,9 @@
 
 
 import { db } from "./firebase";
-import { doc, getDoc, setDoc, updateDoc, Timestamp, collection, getDocs, writeBatch  } from "firebase/firestore";
-import { User, UserRegister, UserChanger, UpdateData } from "../models/User";
-import bcrypt from "bcryptjs";
+import { doc, getDoc, writeBatch  } from "firebase/firestore";
 import { ModeType } from "./constants/calc";
-import { GridSetting, SettingMap, SettingValue } from "../models/CalcSetting";
+import { GridSetting, SettingMap } from "../models/CalcSetting";
 
 /**
  * 百ます計算設定情報の取得
