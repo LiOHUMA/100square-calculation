@@ -12,10 +12,12 @@
 import { useRouter } from "next/router";
 import AuthGuard from "../../components/AuthGuard";
 import { MODE_COLLECTIONS, MODE_LABELS, MODE_SYMBOL } from "../../lib/constants/calc";
+import { useEffect, useState } from "react";
 
 
 export default function ModeSelect() {
     const router = useRouter();
+    const [err, setErr] = useState("");
 
     const handleModeSelect = (mode: string) => {
         router.push(`/calc/play?mode=${mode}`);
@@ -24,6 +26,12 @@ export default function ModeSelect() {
     const handleBackToMenu = () => {
         router.push("/menu");
     };
+
+    useEffect(() => {
+        if (router.query.session === "modeInvalid"){
+            setErr("不正なモードです。")
+        }
+    }, [router.query.session]);
 
     return (
         <AuthGuard>
@@ -34,6 +42,7 @@ export default function ModeSelect() {
                     {`${MODE_LABELS[mode]}(${MODE_SYMBOL[mode]})`}
                 </button>
             ))}
+            {err && <p>{err}</p>}
             <button onClick={handleBackToMenu}>メニューへ戻る</button>
         </div>
         </AuthGuard>

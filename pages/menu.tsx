@@ -1,9 +1,9 @@
 //  @package      pages/menu.tsx
 //  @description  メニュー画面。
 //                各画面に遷移するための画面。
-//  @created      2025-05-18 by uma
+//  @created      2025-06-02 by uma
 //  @version      1.0.0
-//  @lastModified 2025-05-18 by uma
+//  @lastModified 2025-06-02 by uma
 
 // 変更履歴
 // ver 1.0.0 - 新規作成
@@ -40,7 +40,7 @@ export default function Menu() {
   };
 
   const handleGameSetting = () => {
-    router.push("/calc/setting");
+    router.push("/calc/settingSelect");
   };
 
   const handleLogout = async () => {
