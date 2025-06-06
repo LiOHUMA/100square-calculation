@@ -1,9 +1,9 @@
 //  @package      pages/calc/play.tsx
 //  @description  百ます計算のゲーム画面。
 //                百ます計算のゲームをする画面。
-//  @created      2025-06-02 by uma
+//  @created      2025-06-06 by uma
 //  @version      1.0.0
-//  @lastModified 2025-06-02 by uma
+//  @lastModified 2025-06-06 by uma
 
 // 変更履歴
 // ver 1.0.0 - 新規作成
@@ -28,7 +28,7 @@ export default function Settings(){
         } else {
             router.push("/calc/select?session=modeInvalid");
         }
-    }, [router.query.mode])
+    }, [router, router.query.mode])
 
     if (loading) return <p>認証中...</p>;
 

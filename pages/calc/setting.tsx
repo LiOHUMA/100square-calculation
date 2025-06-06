@@ -60,7 +60,7 @@ export default function Settings(){
         };
 
         loadSettings();
-    }, [router.query.mode]);
+    }, [router, router.query.mode]);
 
     const handleBackToOne = () => {
         router.push("/calc/settingSelect");
@@ -108,11 +108,11 @@ export default function Settings(){
                     <h1>変更内容の確認</h1>
                     <label>横の設定：</label>
                     {Object.entries(calcSetting.col).map(([k, v]) => (
-                        <p>{k}: {v.value}</p>
+                        <p key={k}>{k}: {v.value}</p>
                     ))}
                     <label>縦の設定：</label>
                     {Object.entries(calcSetting.row).map(([k, v]) => (
-                        <p>{k}: {v.value}</p>
+                        <p key={k}>{k}: {v.value}</p>
                     ))}
                     <button onClick={handleSave} disabled={updater}>{updater ? "更新中..." : "更新"}</button>
                     {err && <p>{err}</p>}
