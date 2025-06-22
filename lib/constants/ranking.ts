@@ -5,6 +5,8 @@
 //  @version      1.0.0
 //  @lastModified 2025-05-31 by uma
 
+import { ModeType } from "./calc";
+
 // 変更履歴
 // ver 1.0.0 - 新規作成
 
@@ -23,4 +25,11 @@ export const RANKING_LABELS: Record<RankingType, string> = {
   rankings_subtraction: "引き算",
   rankings_multiplication: "かけ算",
   rankings_division: "わり算",
+};
+
+export const MODE_TO_RANKING_MAP: Record<ModeType, RankingType> = {
+  addition: "rankings_addition",
+  subtraction: "rankings_subtraction",
+  multiplication: "rankings_multiplication",
+  division: "rankings_division",
 };
