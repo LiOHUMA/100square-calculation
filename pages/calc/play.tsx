@@ -134,7 +134,7 @@ export default function PlayPage() {
 
     // 未回答のセルチェック
     const handleFinish = () => {
-        const hasEmpty = answers.some((row, _) =>
+        const hasEmpty = answers.some((row) =>
             row.some((val, colIndex) => {
                 const colVal = colList[colIndex];
                 if(mode === "division" && colVal === 0) return false;

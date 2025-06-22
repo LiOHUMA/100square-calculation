@@ -12,16 +12,15 @@
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { Result } from "../../../models/Result";
-import { getResultById } from "../../../lib/resultService";
 import { MODE_LABELS } from "../../../lib/constants/calc";
-import { RANKING_LABELS } from "../../../lib/constants/ranking";
+import { RankingWithMode } from "../../../models/Ranking";
 
 
 export default function ResultPage() {
   const router = useRouter();
   const { resultId } = router.query;
   const [result, setResult] = useState<Result | null>(null);
-  const [rankings, setRankings] = useState<any[]>([]);
+  const [rankings, setRankings] = useState<RankingWithMode[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
