@@ -1,9 +1,9 @@
 //  @package      pages/calc/play.tsx
 //  @description  百ます計算のゲーム画面。
 //                百ます計算のゲームをする画面。
-//  @created      2025-06-06 by uma
+//  @created      2025-06-22 by uma
 //  @version      1.0.0
-//  @lastModified 2025-06-06 by uma
+//  @lastModified 2025-06-22 by uma
 
 // 変更履歴
 // ver 1.0.0 - 新規作成
@@ -23,7 +23,9 @@ export default function PlayPage() {
     const [elapsed, setElapsed] = useState(0);
     const [rowList, setRowList] = useState<number[]>([]);
     const [colList, setColList] = useState<number[]>([]);
-    const [answers, setAnswers] = useState<any[][]>(
+    type DivisionAnswer = { quotient: string; remainder: string };
+    type AnswerCell = string | DivisionAnswer;
+    const [answers, setAnswers] = useState<AnswerCell[][]>(
         Array.from({ length: 10 }, () => Array(10).fill(""))
     );
     const [showConfirm, setShowConfirm] = useState(false);
@@ -118,7 +120,7 @@ export default function PlayPage() {
         value: string,
         part: "quotient" | "remainder" = "quotient"
     ) => {
-        const updated = [...answers]
+        const updated = [...answers];
         if(mode === "division"){
             if(!updated[row][col] || typeof updated[row][col] !== "object"){
                 updated[row][col] = { quotient: "", remainder: ""};
@@ -132,13 +134,14 @@ export default function PlayPage() {
 
     // 未回答のセルチェック
     const handleFinish = () => {
-        const hasEmpty = answers.some((row, rowIndex) =>
+        const hasEmpty = answers.some((row, _) =>
             row.some((val, colIndex) => {
                 const colVal = colList[colIndex];
-                const rowVal = rowList[rowIndex];
                 if(mode === "division" && colVal === 0) return false;
                 if(mode === "division"){
-                    return !val?.quotient && !val?.remainder;
+                    if (typeof val === "object" && val !== null) {
+                        return !val?.quotient && !val?.remainder;
+                    }
                 }else{
                     return val === "";
                 }
@@ -177,7 +180,6 @@ export default function PlayPage() {
 
     // 表の1セルを描画
     const renderCell = (rowIndex: number, colIndex: number) => {
-        const colVal = colList[colIndex];
         const rowVal = rowList[rowIndex];
 
         if(mode === "division" && rowVal === 0){
@@ -192,20 +194,24 @@ export default function PlayPage() {
         }
 
         if(mode === "division"){
-            const cellVal = answers[rowIndex][colIndex] || { quotient: "", remainder: ""};
+            const cellVal = answers[rowIndex][colIndex];
+
+            const quotient = typeof cellVal === "object" && cellVal !== null ? cellVal.quotient : "";
+            const remainder = typeof cellVal === "object" && cellVal !== null ? cellVal.remainder : "";
+
             return (
                 <div>
                     <input
                         type="number"
                         placeholder="答え"
-                        value={ cellVal.quotient }
+                        value={ quotient }
                         onChange={ (e) => handleInputChange(rowIndex, colIndex, e.target.value, "quotient") }
                         onFocus={ () => setFocusedCell({ row: rowIndex, col: colIndex }) }
                     />
                     <input
                         type="number"
                         placeholder="あまり"
-                        value={ cellVal.remainder }
+                        value={ remainder }
                         onChange={ (e) => handleInputChange(rowIndex, colIndex, e.target.value, "remainder") }
                         onFocus={ () => setFocusedCell({ row: rowIndex, col: colIndex }) }
                     />
@@ -216,7 +222,7 @@ export default function PlayPage() {
         return (
             <input
                 type="number"
-                value={ answers[rowIndex][colIndex] }
+                value={ typeof answers[rowIndex][colIndex] === "string" ? answers[rowIndex][colIndex] : "" }
                 onChange={ (e) => handleInputChange(rowIndex, colIndex, e.target.value) }
                 onFocus={ () => setFocusedCell({ row: rowIndex, col: colIndex }) }
             />
@@ -236,14 +242,22 @@ export default function PlayPage() {
                     <div>
                         <div>経過時間： {elapsed}秒</div>
 
-                        {focusedCell && (
-                            <div>
-                                {colList[focusedCell.col]} {MODE_SYMBOL[mode!]} {rowList[focusedCell.row]} = {" "}
-                                {mode === "division"
-                                    ? `${answers[focusedCell.row][focusedCell.col]?.quotient || ""} あまり ${answers[focusedCell.row][focusedCell.col]?.remainder || ""}`
-                                    : answers[focusedCell.row][focusedCell.col]}
-                            </div>
-                        )}
+                        {focusedCell && (() => {
+                            const cell = answers[focusedCell.row][focusedCell.col];
+                            const displayText = mode === "division"
+                                ? (typeof cell === "object" && cell !== null
+                                    ? `${cell.quotient || ""} あまり ${cell.remainder || ""}`
+                                    : ""
+                                )
+                            : (typeof cell === "string" ? cell : "");
+
+                            return (
+                                <div>
+                                    {colList[focusedCell.col]} {MODE_SYMBOL[mode!]} {rowList[focusedCell.row]} = { " " }
+                                    {displayText}
+                                </div>
+                            );
+                        })()}
 
                         <table>
                             <thead>

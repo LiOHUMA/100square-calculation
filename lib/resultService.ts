@@ -10,9 +10,7 @@
 
 
 import { db } from "./firebase";
-import { doc, getDoc, setDoc, updateDoc, Timestamp, collection, getDocs, addDoc  } from "firebase/firestore";
-import { User, UserRegister, UserChanger, UpdateData } from "../models/User";
-import bcrypt from "bcryptjs";
+import { doc, getDoc, Timestamp, collection, addDoc  } from "firebase/firestore";
 import { Result, ResultRegister } from "../models/Result";
 
 /**

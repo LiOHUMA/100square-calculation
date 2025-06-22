@@ -12,11 +12,9 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { verify } from "jsonwebtoken"
 import { getUserById } from "../../../lib/userService";
-import { saveCalcSettingData } from '../../../lib/calcSetting';
-import { MODE_COLLECTIONS, ModeType } from '../../../lib/constants/calc';
-import { getRankingsByIdAndMode, saveRanking } from '../../../lib/rankingService';
-import { MODE_TO_RANKING_MAP } from '../../../lib/constants/ranking';
-import { createResult, getResultById } from '../../../lib/resultService';
+import { ModeType } from '../../../lib/constants/calc';
+import { getRankingsByIdAndMode } from '../../../lib/rankingService';
+import { getResultById } from '../../../lib/resultService';
 
 const JWT_SECRET = process.env.JWT_SECRET!;
 
