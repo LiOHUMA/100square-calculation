@@ -54,8 +54,8 @@ export default function ResultPage() {
     router.push(`/calc/play?mode=${mode}`);
   };
 
-  const handleGameSetting = () => {
-    router.push("/calc/settingSelect");
+  const handleCalculation = () => {
+    router.push("/calc/select");
   };
 
   const handleBackToMenu = () => {
@@ -97,37 +97,37 @@ export default function ResultPage() {
 
                 switch (result.mode) {
                   case "addition":
-                    expected = row + col;
+                    expected = col + row;
                     userAnswerDisplay = answer;
                     isCorrect = !isEmpty && Number(answer) === expected;
                     expectedDisplay = (row + col).toString();
                     break;
                   case "subtraction":
-                    expected = row - col;
+                    expected = col - row;
                     userAnswerDisplay = answer;
                     isCorrect = !isEmpty && Number(answer) === expected;
                     expectedDisplay = (row - col).toString();
                     break;
                   case "multiplication":
-                    expected = row * col;
+                    expected = col * row;
                     userAnswerDisplay = answer;
                     isCorrect = !isEmpty && Number(answer) === expected;
                     expectedDisplay = (row * col).toString();
                     break;
                   case "division":
-                    if (col === 0) {
+                    if (row === 0) {
                       userAnswerDisplay = "-";
                       isCorrect = true;
                       expectedDisplay = "-";
                     } else {
-                      const quotient = Math.floor(row / col);
-                      const remainder = row % col;
-                      const uq = answer?.quotient;
-                      const ur = answer?.remainder;
+                      const quotient = Math.floor(col / row);
+                      const remainder = col % row;
+                      const uq = answer?.quotient ?? "未入力";
+                      const ur = answer?.remainder ?? "未入力";
                       userAnswerDisplay = `${uq} あまり ${ur}`;
                       const isEmptyDiv = uq === null || uq === undefined || uq === "" || ur === null || ur === undefined || ur === "";
                       isCorrect = !isEmptyDiv && uq == quotient && ur == remainder;
-                      expectedDisplay = `${Math.floor(row / col)} あまり ${row % col}`;
+                      expectedDisplay = `${Math.floor(col / row)} あまり ${col % row}`;
                     }
                     break;
                 }
@@ -183,7 +183,7 @@ export default function ResultPage() {
         </table>
       </ol>
       <button onClick={() => handleModeSelect(result.mode)}>もう一度挑戦する</button>
-      <button onClick={handleGameSetting}>モード選択へ戻る</button>
+      <button onClick={handleCalculation}>モード選択へ戻る</button>
       <button onClick={handleBackToMenu}>メニューへ戻る</button>
     </div>
   );

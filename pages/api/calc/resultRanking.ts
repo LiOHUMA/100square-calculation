@@ -47,33 +47,48 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
                 switch(mode){
                     case "addition":
-                        expected = rowList[i] + colList[j];
+                        expected = colList[j] + rowList[i];
                         break;
 
                     case "subtraction":
-                        expected = rowList[i] - colList[j];
+                        expected = colList[j] - rowList[i];
                         break;
 
                     case "multiplication":
-                        expected = rowList[i] * colList[j];
+                        expected = colList[j] * rowList[i];
                         break;
 
                     case "division":
-                        if(colList[j] === 0){
+                        if(rowList[i] === 0){
                             row.push(true);
+                            correctCount++;
                             continue;
                         }
 
-                        const expectedQuotient = Math.floor(rowList[i] / colList[j])
-                        const expectedRemainder = rowList[i] % colList[j];
+                        const expectedQuotient = Math.floor(colList[j] / rowList[i])
+                        const expectedRemainder = colList[j] % rowList[i];
 
-                        const userQuotient = Array.isArray(userAnswer)? userAnswer[0]: null;
-                        const userRemainder = Array.isArray(userAnswer)? userAnswer[1]: null;
+                        if (
+                            userAnswer &&
+                            typeof userAnswer === "object" &&
+                            "quotient" in userAnswer &&
+                            "remainder" in userAnswer
+                        ) {
+                            const userQuotient = Number(userAnswer.quotient);
+                            const userRemainder = Number(userAnswer.remainder);
 
-                        const isCorrectDivision = userQuotient === expectedQuotient && userRemainder === expectedRemainder;
+                            const isCorrectDivision =
+                                !isNaN(userQuotient) &&
+                                !isNaN(userRemainder) &&
+                                userQuotient === expectedQuotient &&
+                                userRemainder === expectedRemainder;
 
-                        row.push(isCorrectDivision);
-                        if(isCorrectDivision) correctCount++;
+                            row.push(isCorrectDivision);
+                            if (isCorrectDivision) correctCount++;
+                        } else {
+                            row.push(false);
+                        }
+
                         continue;
 
                     default:
