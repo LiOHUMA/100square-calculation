@@ -1,9 +1,9 @@
 //  @package      lib/rankingService.ts
 //  @description  ランキングライブラリ。
 //                ランキングの情報取得、登録する機能。
-//  @created      2025-05-31 by uma
+//  @created      2025-06-17 by uma
 //  @version      1.0.0
-//  @lastModified 2025-05-31 by uma
+//  @lastModified 2025-06-17 by uma
 
 // 変更履歴
 // ver 1.0.0 - 新規作成
@@ -12,7 +12,8 @@
 import { db } from "./firebase";
 import { doc, getDocs, setDoc, collection, getDoc  } from "firebase/firestore";
 import { RankingWithMode, RankingWithModeWithName } from "../models/Ranking";
-import { RANKING_SUB_COLLECTIONS } from "./constants/ranking";
+import { MODE_TO_RANKING_MAP, RANKING_SUB_COLLECTIONS, RankingType } from "./constants/ranking";
+import { ModeType } from "./constants/calc";
 
 /**
  * 個人ランキングデータの取得
@@ -36,6 +37,30 @@ export const getRankingsById  = async ( id: string ): Promise<RankingWithMode[] 
     });
   }
   return rankings;
+};
+
+/**
+ * 指定モードの個人ランキング（上位3件）を取得
+ * @param id ユーザid
+ * @param mode モード名
+*/
+export const getRankingsByIdAndMode  = async ( id: string, mode: ModeType): Promise<RankingWithMode[] | null> => {
+  const rankings: RankingWithMode[] = [];
+  const rankingCollectionName: RankingType = MODE_TO_RANKING_MAP[mode];
+  const ref = collection(db, "scores", id, rankingCollectionName);
+  const snap = await getDocs(ref);
+
+    snap.docs.map(doc => {
+      const data = doc.data();
+      rankings.push({
+        rank: doc.id,
+        correctAnswers: data.correctAnswers,
+        timeSpent: data.timeSpent,
+        date: data.date.toDate(),
+        mode: rankingCollectionName
+      })
+    });
+  return rankings
 };
 
 /**
