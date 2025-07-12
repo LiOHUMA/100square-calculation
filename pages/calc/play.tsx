@@ -1,9 +1,9 @@
 //  @package      pages/calc/play.tsx
 //  @description  百ます計算のゲーム画面。
 //                百ます計算のゲームをする画面。
-//  @created      2025-06-22 by uma
+//  @created      2025-07-12 by uma
 //  @version      1.0.0
-//  @lastModified 2025-06-22 by uma
+//  @lastModified 2025-07-12 by uma
 
 // 変更履歴
 // ver 1.0.0 - 新規作成
@@ -262,7 +262,7 @@ export default function PlayPage() {
                         <table>
                             <thead>
                                 <tr>
-                                    <th></th>
+                                    <th><strong>{MODE_SYMBOL[mode!]}</strong></th>
                                     {colList.map((colVal, i) => (
                                         <th key={i}>
                                             {colVal}

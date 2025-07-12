@@ -1,9 +1,9 @@
 //  @package      pages/admin/settings/createUser.tsx
 //  @description  新規ユーザ作成画面。
 //                ユーザ作成画面。
-//  @created      2025-05-20 by uma
+//  @created      2025-07-03 by uma
 //  @version      1.0.0
-//  @lastModified 2025-05-20 by uma
+//  @lastModified 2025-07-03 by uma
 
 // 変更履歴
 // ver 1.0.0 - 新規作成
@@ -14,6 +14,10 @@ import { useRouter } from "next/router";
 import PasswordInput from "../../../components/PasswordInput";
 import { UserRegister } from "../../../models/User"
 import AuthGuard from "../../../components/AuthGuard";
+import "../../../styles/globals.css";
+import { motion } from "framer-motion";
+import Button from "../../../components/ui/Button";
+import ErrorMessage from "../../../components/ui/ErrorMessage";
 
 export default function CreateUser(){
     const [newUser, setNewUser] = useState<UserRegister>({
@@ -66,53 +70,156 @@ export default function CreateUser(){
     return(
         <AuthGuard>
             {!isConfirm? (
-                <div>
-                    <h1>新規ユーザ作成</h1>
-                    <form onSubmit={handleConfirm}>
-                        <label>ID：</label>
-                        <input type="text" placeholder="ユーザID" value={newUser.id} onChange={(e) => setNewUser({...newUser, id: e.target.value})} required></input>
-                        <label>ニックネーム：</label>
-                        <input type="text" placeholder="ニックネーム" value={newUser.name} onChange={(e) => setNewUser({...newUser, name: e.target.value})} required></input>
-                        <label>学年：</label>
-                        <input type="number" placeholder="学年" value={newUser.grade} onChange={(e) => setNewUser({...newUser, grade: Number(e.target.value)})} required></input>
-                        <label>役割：</label>
-                        <select value={newUser.role} onChange={(e) => setNewUser({...newUser, role: Number(e.target.value)})}>
-                            <option value={1}>生徒</option>
-                            <option value={0}>管理者</option>
-                        </select>
-                        <PasswordInput
-                            label="パスワード："
-                            placeholder="パスワード"
-                            value={newUser.password}
-                            onChange={(e) => setNewUser({...newUser, password: e.target.value})}
-                            required
-                        />
-                        <PasswordInput
-                            label="確認用パスワード："
-                            placeholder="確認用パスワード"
-                            value={checkPw}
-                            onChange={(e) => setCheckPw(e.target.value)}
-                            required
-                        />
-                        <button type="submit">確認画面へ</button>
-                        {err && <p>{err}</p>}
+                <motion.div
+                    initial={{ opacity: 0, y: 30 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5 }}
+                    className="min-h-screen bg-gray-50 p-6 flex flex-col items-center"
+                >
+                    <h1 className="text-4xl font-bold text-center text-gray-700 mb-6">👤 新規ユーザ作成</h1>
+                    <form onSubmit={handleConfirm} className="w-full max-w-md">
+                        <div className="mb-2">
+                            <label className="block text-lg font-semibold text-gray-700 mb-2">ID：</label>
+                            <input
+                                type="text"
+                                placeholder="ユーザID"
+                                value={newUser.id}
+                                onChange={(e) => setNewUser({...newUser, id: e.target.value})}
+                                required
+                                className="w-full p-3 border rounded-xl text-gray-900 focus:outline-none focus:ring-2 focus:ring-pink-300"
+                            />
+                        </div>
+                        <div className="mb-2">
+                            <label className="block text-lg font-semibold text-gray-700 mb-2">ニックネーム：</label>
+                            <input
+                                type="text"
+                                placeholder="ニックネーム"
+                                value={newUser.name}
+                                onChange={(e) => setNewUser({...newUser, name: e.target.value})}
+                                required
+                                className="w-full p-3 border rounded-xl text-gray-900 focus:outline-none focus:ring-2 focus:ring-pink-300"
+                            />
+                        </div>
+                        <div className="mb-2">
+                            <label className="block text-lg font-semibold text-gray-700 mb-2">学年：</label>
+                            <input
+                                type="number"
+                                placeholder="学年"
+                                value={newUser.grade}
+                                onChange={(e) => setNewUser({...newUser, grade: Number(e.target.value)})}
+                                required
+                                className="w-full p-3 border rounded-xl text-gray-900 focus:outline-none focus:ring-2 focus:ring-pink-300"
+                            />
+                        </div>
+                        <div className="mb-2">
+                            <label className="block text-lg font-semibold text-gray-700 mb-2">役割：</label>
+                            <select
+                                value={newUser.role}
+                                onChange={(e) => setNewUser({...newUser, role: Number(e.target.value)})}
+                                className="w-full p-3 border rounded-xl text-gray-900 focus:outline-none focus:ring-2 focus:ring-pink-300"
+                            >
+                                <option value={1}>生徒</option>
+                                <option value={0}>管理者</option>
+                            </select>
+                        </div>
+                        <div className="mb-2">
+                            <PasswordInput
+                                label="パスワード："
+                                placeholder="パスワード"
+                                value={newUser.password}
+                                onChange={(e) => setNewUser({...newUser, password: e.target.value})}
+                                required
+                            />
+                        </div>
+                        <div className="mb-2">
+                            <PasswordInput
+                                label="確認用パスワード："
+                                placeholder="確認用パスワード"
+                                value={checkPw}
+                                onChange={(e) => setCheckPw(e.target.value)}
+                                required
+                            />
+                        </div>
+                        <div className="mb-2">
+                            <Button
+                                type = "submit"
+                                color = "continue"
+                            >
+                                📝 確認画面へ
+                            </Button>
+                        </div>
                     </form>
-                    <button onClick={handleBackToOne}>前に戻る</button>
-                </div>
+                    <div className="w-full max-w-md">
+                        <Button
+                            type = "button"
+                            color = "back"
+                            onClick={handleBackToOne}
+                        >
+                            🔙 ユーザ管理に戻る
+                        </Button>
+                    </div>
+                    {err && <ErrorMessage message={err}/>}
+                </motion.div>
             ): (
-                <div>
-                    <h1>入力内容の確認</h1>
-                    <form  onSubmit={handleCreateUser}>
-                        <p>ID：{newUser.id}</p>
-                        <p>ニックネーム：{newUser.name}</p>
-                        <p>学年：{newUser.grade}</p>
-                        <p>役割：{newUser.role === 0 ? "管理者" : "生徒"}</p>
-                        <p>パスワード：{Array(newUser.password.length).fill("●").join("")}</p>
-                        <button type="submit" disabled={loading}>{loading ? "登録中..." : "登録"}</button>
-                        {err && <p>{err}</p>}
+                <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5 }}
+                    className="min-h-screen bg-gray-50 p-6 flex flex-col items-center"
+                >
+                    <h1 className="text-4xl font-bold text-center text-gray-700 mb-6">📝 入力内容の確認</h1>
+                    <form  onSubmit={handleCreateUser} className="w-full max-w-md bg-white rounded-3xl shadow-lg p-6 space-y-4 mb-6">
+                        <div className="text-lg text-gray-800">
+                            <p className="mb-2">
+                                <span className="font-semibold">
+                                    🆔 ID：
+                                </span>
+                                {newUser.id}
+                            </p>
+                            <p className="mb-2">
+                                <span className="font-semibold">
+                                    👤 ニックネーム：
+                                </span>
+                                {newUser.name}
+                            </p>
+                            <p className="mb-2">
+                                <span className="font-semibold">
+                                    🎒 学年：
+                                </span>
+                                {newUser.grade}
+                            </p>
+                            <p className="mb-2">
+                                <span className="font-semibold">
+                                    🔐 役割：
+                                </span>
+                                {newUser.role === 0 ? "管理者" : "生徒"}
+                            </p>
+                            <p className="mb-2">
+                                <span className="font-semibold">
+                                    🔑 パスワード：
+                                </span>
+                                {Array(newUser.password.length).fill("●").join("")}
+                            </p>
+                        </div>
+                        <Button
+                            type="submit"
+                            disabled={loading}
+                            color="continue"
+                        >
+                            {loading ? "⏳ 登録中..." : "✏️ 登録"}
+                        </Button>
+                        {err && <ErrorMessage message={err}/>}
                     </form>
-                    <button onClick={() => setIsConfirm(false)}>前に戻る</button>
-                </div>
+                    <div className="w-full max-w-md">
+                        <Button
+                            type="button"
+                            color="back"
+                            onClick={() => setIsConfirm(false)}
+                        >
+                            🔙 登録入力に戻る
+                        </Button>
+                    </div>
+                </motion.div>
             )}
         </AuthGuard>
     );
