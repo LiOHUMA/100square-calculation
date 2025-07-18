@@ -1,9 +1,9 @@
 //  @package      pages/admin/settings/deleteUser.tsx
 //  @description  ユーザ削除画面。
 //                ユーザ情報を削除する画面。
-//  @created      2025-07-12 by uma
+//  @created      2025-07-18 by uma
 //  @version      1.0.0
-//  @lastModified 2025-07-12 by uma
+//  @lastModified 2025-07-18 by uma
 
 // 変更履歴
 // ver 1.0.0 - 新規作成
@@ -64,10 +64,6 @@ export default function DeleteUser(){
 
     const handleBackToOne = () => {
         router.push("/admin/user");
-    };
-
-    const handleBackToMenu = () => {
-        router.push("/menu");
     };
 
     const handleDeleteUser = async(e: React.FormEvent) => {
