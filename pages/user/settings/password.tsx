@@ -1,9 +1,9 @@
 //  @package      pages/user/settings/password.tsx
 //  @description  パスワード変更画面。
 //                現在のパスワードと新しいパスワードを入力する画面。
-//  @created      2025-05-20 by uma
+//  @created      2025-07-18 by uma
 //  @version      1.0.0
-//  @lastModified 2025-05-20 by uma
+//  @lastModified 2025-07-18 by uma
 
 // 変更履歴
 // ver 1.0.0 - 新規作成
@@ -14,6 +14,9 @@ import { useRouter } from "next/router";
 import { UserOmit } from "../../../models/User";
 import AuthGuard from "../../../components/AuthGuard";
 import PasswordInput from "../../../components/PasswordInput";
+import Button from "../../../components/ui/Button";
+import ErrorMessage from "../../../components/ui/ErrorMessage";
+import "../../../styles/globals.css";
 
 export default function ChangePassword() {
     const router = useRouter();
@@ -26,22 +29,22 @@ export default function ChangePassword() {
 
     const handleChange = async (e: React.FormEvent) => {
         if (!bfPw) {
-            alert("変更前のパスワードを入力してください");
+            alert("まえのパスワードをいれてね！");
             return;
         }
 
         if (!afPw) {
-            alert("変更後のパスワードを入力してください");
+            alert("あたらしいパスワードをいれてね！");
             return;
         }
 
         if (!afCheckPw) {
-            alert("変更後の確認用パスワードを入力してください");
+            alert("あたらしいパスワード（かくにん）をいれてね！");
             return;
         }
 
         if (afPw !== afCheckPw) {
-            alert("変更後のパスワードと確認用パスワードが一致していません");
+            alert("あたらしいパスワードとかくにんのパスワードがちがうよ！");
             return;
         }
 
@@ -69,10 +72,10 @@ export default function ChangePassword() {
     return (
         <AuthGuard onAuthSuccess={setUserOmit}>
             {userOmit ? (
-                <div>
-                    <h1>パスワードの変更</h1>
-                    <p>パスワードの変更をします</p>
-                    <form onSubmit={handleChange}>
+                <div className="min-h-screen bg-white text-gray-900 flex flex-col items-center p-6">
+                    <h1 className="text-3xl font-bold mb-6">🔐 パスワードのへんこう</h1>
+                    <p className="mb-6 text-center text-lg">パスワードをあんぜんにかえよう！</p>
+                    <form onSubmit={handleChange} className="w-full max-w-sm flex flex-col gap-4 mb-6">
                         <PasswordInput 
                             label="変更前パスワード"
                             placeholder="変更前パスワード"
@@ -94,10 +97,24 @@ export default function ChangePassword() {
                             onChange={(e) => setAfCheckPw(e.target.value)}
                             required
                         />
-                        <button type="submit" disabled={loading}>{loading ? "変更中..." : "変更"}</button>
-                        {err && <p>{err}</p>}
+                        <Button
+                            type="submit"
+                            color="gamesetting"
+                            disabled={loading}
+                        >
+                            {loading ? "変更中..." : "変更"}
+                        </Button>
                     </form>
-                    <button onClick={handleBackToOne}>前に戻る</button>
+                    <div className="flex flex-col gap-4 w-full max-w-sm">
+                        <Button
+                            type="button"
+                            color="back"
+                            onClick={handleBackToOne}
+                        >
+                            🔙 前に戻る
+                        </Button>
+                    </div>
+                    {err && <ErrorMessage message={err} />}
                 </div>
             ) : (
                 <p>認証中...</p>

@@ -12,6 +12,8 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { UserOmit } from "../models/User";
+import "../styles/globals.css";
+import { motion } from "framer-motion";
 
 export default function AuthGuard({ 
   children, 
@@ -37,7 +39,26 @@ export default function AuthGuard({
     checkAuth();
   }, [router, onAuthSuccess]);
 
-  if (loading) return <p>認証中...</p>;
+  if (loading) {
+    return(
+      <div className="min-h-screen flex flex-col items-center justify-center bg-gray-50 text-gray-800">
+        <motion.div
+          className="w-16 h-16 border-4 border-pink-300 border-t-transparent rounded-full animate-spin mb-6"
+          initial={{ scale: 0.8, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          transition={{ duration: 0.5 }}
+        />
+        <motion.p
+          className="text-lg font-semibold"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.4, duration: 0.5 }}
+        >
+          🔐 認証中です...
+        </motion.p>
+      </div>
+    );
+  }
 
   return <>{children}</>;
 }

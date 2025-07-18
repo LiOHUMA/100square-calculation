@@ -1,9 +1,9 @@
 //  @package      pages/admin/settings/deleteUser.tsx
 //  @description  ユーザ削除画面。
 //                ユーザ情報を削除する画面。
-//  @created      2025-05-26 by uma
+//  @created      2025-07-18 by uma
 //  @version      1.0.0
-//  @lastModified 2025-05-26 by uma
+//  @lastModified 2025-07-18 by uma
 
 // 変更履歴
 // ver 1.0.0 - 新規作成
@@ -13,6 +13,10 @@ import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { UserChanger } from "../../../models/User"
 import AuthGuard from "../../../components/AuthGuard";
+import "../../../styles/globals.css";
+import { motion } from "framer-motion";
+import Button from "../../../components/ui/Button";
+import ErrorMessage from "../../../components/ui/ErrorMessage";
 
 export default function DeleteUser(){
     const[users, setUsers] = useState<UserChanger[]>([]);
@@ -62,10 +66,6 @@ export default function DeleteUser(){
         router.push("/admin/user");
     };
 
-    const handleBackToMenu = () => {
-        router.push("/menu");
-    };
-
     const handleDeleteUser = async(e: React.FormEvent) => {
             e.preventDefault();
 
@@ -96,40 +96,78 @@ export default function DeleteUser(){
     return(
         <AuthGuard>
             {!isConfirm? (
-                <div>
-                    <h1>ユーザ削除</h1>
-                    <form onSubmit={handleSelectUser}>
-                        <p>削除対象のユーザを選択してください</p>
+                <motion.div
+                    initial={{ opacity: 0, y: 30 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5 }}
+                    className="min-h-screen bg-gray-50 p-6 flex flex-col items-center"
+                >
+                    <h1 className="text-4xl font-bold text-center text-red-600 mb-6">🗑️ ユーザ削除</h1>
+                    <form onSubmit={handleSelectUser} className="mx-auto w-full max-w-md space-y-4 mb-4">
+                        <p className="text-gray-700">削除対象のユーザを選択してください</p>
                         <select
                             id="name"
                             value={selectedId}
                             onChange={(e) => setSelectedId(e.target.value)}
                             required
-                            >
-                                <option value="">ユーザを選択</option>
-                                {users.map((users) => (
-                                    <option key={users.id} value={users.id}>ID：{users.id}、ニックネーム：{users.name}</option>
-                                ))}
+                            className="w-full p-3 border rounded-xl text-gray-900 focus:outline-none focus:ring-2 focus:ring-pink-300"
+                        >
+                            <option value="">ユーザを選択</option>
+                            {users.map((users) => (
+                                <option key={users.id} value={users.id}>ID：{users.id}、ニックネーム：{users.name}</option>
+                            ))}
                         </select>
-                        <button type="submit">ユーザ削除確認画面へ</button>
-                        {err && <p>{err}</p>}
+                        <Button
+                            type="submit"
+                            color="danger"
+                        >
+                            📝 削除確認へ進む
+                        </Button>
                     </form>
-                    <button onClick={handleBackToOne}>前に戻る</button>
-                    <button onClick={handleBackToMenu}>メニューへ戻る</button>
+                    <div className="w-full max-w-md">
+                        <Button
+                            type="button"
+                            color="back"
+                            onClick={handleBackToOne}
+                        >
+                            🔙 ユーザ管理に戻る
+                        </Button>
                     </div>
+                    {err && <ErrorMessage message={err}/>}
+                </motion.div>
             ): (
-                <div>
-                    <h1>削除対象の確認</h1>
-                    <form  onSubmit={handleDeleteUser}>
-                        <p>ID：{selectedId}</p>
-                        <p>ニックネーム：{userDeleter.name}</p>
-                        <p>学年：{userDeleter.grade}</p>
-                        <p>役割：{userDeleter.role === 0 ? "管理者" : "生徒" }</p>
-                        <button type="submit" disabled={loading}>{loading ? "削除中..." : "削除"}</button>
-                        {err && <p>{err}</p>}
+                <motion.div
+                    initial={{ opacity: 0, y: 30 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5 }}
+                    className="min-h-screen flex flex-col items-center justify-center bg-gray-50 p-6"
+                >
+                    <h1 className="text-4xl font-bold text-center text-red-600 mb-6">⚠️ 削除確認</h1>
+                    <p className="text-center text-gray-700">以下のユーザを本当に削除しますか？</p>
+                    <form  onSubmit={handleDeleteUser} className="w-full max-w-md bg-white rounded-3xl shadow-lg p-6 space-y-4 mb-6">
+                        <p><strong>ID：{selectedId}</strong></p>
+                        <p><strong>ニックネーム：{userDeleter.name}</strong></p>
+                        <p><strong>学年：{userDeleter.grade}</strong></p>
+                        <p><strong>役割：{userDeleter.role === 0 ? "管理者" : "生徒" }</strong></p>
+                        <Button
+                            type="submit"
+                            color="danger"
+                            disabled={loading}
+                        >
+                            {loading ? "削除中..." : `🗑️ ${userDeleter.name} を削除する`}
+                        </Button>
                     </form>
-                    <button onClick={() => setIsConfirm(false)}>前に戻る</button>
-                </div>
+                    <div className="w-full max-w-md">
+                        <Button
+                            type="button"
+                            color="back"
+                            onClick={() => setIsConfirm(false)}
+                        >
+                            🔙 ユーザ選択に戻る
+                        </Button>
+                    </div>
+                    {err && <ErrorMessage message={err}/>}
+                </motion.div>
             )}
         </AuthGuard>
     );
