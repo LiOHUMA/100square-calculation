@@ -1,9 +1,9 @@
 //  @package      pages/user/settings/nickname.tsx
 //  @description  ニックネーム変更画面。
 //                変更したい新しいニックネームを入力する画面。
-//  @created      2025-05-20 by uma
+//  @created      2025-07-18 by uma
 //  @version      1.0.0
-//  @lastModified 2025-05-20 by uma
+//  @lastModified 2025-07-18 by uma
 
 // 変更履歴
 // ver 1.0.0 - 新規作成
@@ -13,6 +13,9 @@ import { useState } from "react";
 import { useRouter } from "next/router";
 import { UserOmit } from "../../../models/User";
 import AuthGuard from "../../../components/AuthGuard";
+import ErrorMessage from "../../../components/ui/ErrorMessage";
+import Button from "../../../components/ui/Button";
+import "../../../styles/globals.css";
 
 export default function ChangeNickname() {
     const router = useRouter();
@@ -51,16 +54,39 @@ export default function ChangeNickname() {
     return (
         <AuthGuard onAuthSuccess={setUserOmit}>
           {userOmit ? (
-            <div>
-                <h1>ニックネームの変更</h1>
-                <p>ニックネームの変更をします</p>
-                <p>変更前のニックネームは「{userOmit.name}」です</p>
-                <form onSubmit={handleChange}>
-                  <input type="input" placeholder="ニックネーム" value={name} onChange={(e) => setName(e.target.value)} required />
-                  <button type="submit" disabled={loading}>{loading ? "変更中..." : "変更"}</button>
-                  {err && <p>{err}</p>}
+            <div className="min-h-screen bg-white text-gray-900 flex flex-col items-center p-6">
+                <h1 className="text-3xl font-bold mb-6">✏️ ニックネームのへんこう！</h1>
+                <p className="mb-4 text-center text-lg">
+                  いまのニックネームは<br />
+                  「 <span className="text-blue-600 font-bold text-2xl">{userOmit.name}</span> 」 だよ
+                </p>
+                <form onSubmit={handleChange} className="w-full max-w-sm flex flex-col gap-4 mb-4">
+                  <input
+                    type="input"
+                    placeholder="新しいニックネームを入力してね"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    className="w-full p-3 border rounded-xl text-gray-900 focus:outline-none focus:ring-2 focus:ring-pink-300 text-center"
+                    required
+                  />
+                  <Button
+                    type="submit"
+                    color="gamesetting"
+                    disabled={loading}
+                  >
+                    {loading ? "変更中..." : "変更"}
+                  </Button>
                 </form>
-                <button onClick={handleBackToOne}>前に戻る</button>
+                <div className="flex flex-col gap-4 w-full max-w-sm">
+                  <Button
+                    type="button"
+                    color="back"
+                    onClick={handleBackToOne}
+                  >
+                    🔙 前に戻る
+                  </Button>
+                </div>
+                {err && <ErrorMessage message={err} />}
             </div>
           ) : (
             <p>認証中...</p>

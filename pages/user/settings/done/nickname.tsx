@@ -1,4 +1,4 @@
-//  @package      pages/user/settings/nickname.tsx
+//  @package      pages/user/settings/done/nickname.tsx
 //  @description  ニックネーム変更完了画面。
 //                新しいニックネームに変更できたことを知らせる画面。
 //  @created      2025-05-20 by uma
@@ -13,6 +13,8 @@ import { useState } from "react";
 import { useRouter } from "next/router";
 import { UserOmit } from "../../../../models/User";
 import AuthGuard from "../../../../components/AuthGuard";
+import Button from "../../../../components/ui/Button";
+import "../../../../styles/globals.css";
 
 export default function DoneNickname() {
     const router = useRouter();
@@ -29,14 +31,32 @@ export default function DoneNickname() {
     return (
         <AuthGuard onAuthSuccess={setUserOmit}>
             {userOmit ? (
-                <div>
-                    <h1>ニックネームの変更が完了しました</h1>
-                    <p>「{userOmit.name}」に変更しました</p>
-                    <button onClick={handleBackToSetting}>ユーザ設定へ戻る</button>
-                    <button onClick={handleBackToMenu}>メニューへ戻る</button>
+                <div className="min-h-screen bg-white text-gray-900 flex flex-col items-center justify-center p-6">
+                    <h1 className="text-2xl font-bold mb-4">✨ ニックネーム変更できたよ！ ✨</h1>
+                    <p className="text-lg mb-6 text-center">
+                        あたらしいニックネームは…<br />
+                        「 <span className="text-blue-600 font-bold text-2xl mt-2 inline-block">{userOmit.name}</span> 」<br />
+                        にへんこうしたよ！ 🎈
+                    </p>
+                    <div className="flex flex-col gap-4 w-full max-w-sm">
+                        <Button
+                            type="button"
+                            color="gamesetting"
+                            onClick={handleBackToSetting}
+                        >
+                            ⚙️ ユーザ設定へもどる
+                        </Button>
+                        <Button
+                            type="button"
+                            color="back"
+                            onClick={handleBackToMenu}
+                        >
+                            🏠 メニューへもどる
+                        </Button>
+                    </div>
                 </div>
             ) : (
-                <p>認証中...</p>
+                <p className="min-h-screen flex items-center justify-center text-gray-700">認証中...</p>
             )}
         </AuthGuard>
     );

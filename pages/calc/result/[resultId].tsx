@@ -90,7 +90,7 @@ export default function ResultPage() {
         <p>
           <strong>経過時間：{result.timeSpent} 秒</strong>
         </p>
-        {result.rank && 
+        {result.rank !== 0 && 
           <p>
             <strong>🏅 {result.rank} 位にランクインしました！ 🏅</strong>
           </p>

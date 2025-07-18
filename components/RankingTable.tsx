@@ -63,7 +63,7 @@ export default function RankingTable({
                 </select>
             </div>
 
-            <table  className="min-w-full bg-white border border-gray-300 rounded-xl shadow table-fixed">
+            <table className="min-w-full bg-white border border-gray-300 rounded-xl shadow table-fixed">
                 <thead>
                     <tr className="bg-gray-200 text-gray-800 text-lg">
                         <th className="py-2 px-4 text-center border-r border-gray-300">モード</th>

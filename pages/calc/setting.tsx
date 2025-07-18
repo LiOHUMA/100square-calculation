@@ -1,9 +1,9 @@
 //  @package      pages/calc/setting.tsx
 //  @description  百ます計算のゲーム設定画面。
 //                百ます計算のゲーム設定をする画面。
-//  @created      2025-06-06 by uma
+//  @created      2025-07-18 by uma
 //  @version      1.0.0
-//  @lastModified 2025-06-06 by uma
+//  @lastModified 2025-07-18 by uma
 
 // 変更履歴
 // ver 1.0.0 - 新規作成
@@ -14,6 +14,8 @@ import { MODE_LABELS, ModeType } from "../../lib/constants/calc";
 import AuthGuard from "../../components/AuthGuard";
 import { useEffect, useState } from "react";
 import { GridSetting, SettingMap } from "../../models/CalcSetting";
+import ErrorMessage from "../../components/ui/ErrorMessage";
+import Button from "../../components/ui/Button";
 
 export default function Settings(){
     const router = useRouter();
@@ -80,8 +82,7 @@ export default function Settings(){
         }));
     };
 
-    const handleSave = async(e: React.FormEvent) => {
-        e.preventDefault();
+    const handleSave = async () => {
         setUpdater(true);
         const res = await fetch("/api/settings/changeCalcSetting", {
             method: "POST",
@@ -105,44 +106,99 @@ export default function Settings(){
         <AuthGuard>
             {isConfirm? (
                 <div>
-                    <h1>変更内容の確認</h1>
-                    <label>横の設定：</label>
-                    {Object.entries(calcSetting.col).map(([k, v]) => (
-                        <p key={k}>{k}: {v.value}</p>
-                    ))}
-                    <label>縦の設定：</label>
-                    {Object.entries(calcSetting.row).map(([k, v]) => (
-                        <p key={k}>{k}: {v.value}</p>
-                    ))}
-                    <button onClick={handleSave} disabled={updater}>{updater ? "更新中..." : "更新"}</button>
-                    {err && <p>{err}</p>}
-                    <button onClick={() => { setIsConfirm(false); setErr(""); }}>前に戻る</button>
+                    <h1 className="text-4xl font-bold text-center text-gray-700 mb-6">変更内容の確認</h1>
+                    
+                    <div className="mb-4">
+                        <h2  className="font-semibold text-lg mb-1">横の設定：</h2>
+                        <ul className="grid grid-cols-5 gap-2">
+                            {Object.entries(calcSetting.col).map(([k, v]) => (
+                                <li key={k} className="bg-gray-100 p-2 rounded text-center">{k}: {v.value}</li>
+                            ))}
+                        </ul>
+                    </div>
+                    
+                    <div className="mb-4">
+                        <h2 className="font-semibold text-lg mb-1">縦の設定：</h2>
+                        <ul className="grid grid-cols-5 gap-2">
+                            {Object.entries(calcSetting.row).map(([k, v]) => (
+                                <li key={k} className="bg-gray-100 p-2 rounded text-center">{k}: {v.value}</li>
+                            ))}
+                        </ul>
+                    </div>
+                    <div className="flex flex-col gap-4 w-full max-w-sm">
+                        <Button
+                            type="button"
+                            color="gamesetting"
+                            onClick={handleSave}
+                            disabled={updater}
+                        >
+                            {updater ? "更新中..." : "更新"}
+                        </Button>
+                        <Button
+                            type="button"
+                            color="back"
+                            onClick={() => { setIsConfirm(false); setErr(""); }}
+                        >
+                            入力画面に戻る
+                        </Button>
+                    </div>
+                    {err && <ErrorMessage message={err} />}
                 </div>
             ) : (
                 <div>
-                    <h1>{MODE_LABELS[mode!]} の百ます計算設定</h1>
-                    <label>横の設定：</label>
-                    {Object.entries(calcSetting.col).map(([k, v]) => (
-                        <input 
-                            type="number"
-                            key={k}
-                            value={v.value}
-                            onChange={(e) => handleChange("col", k, parseInt(e.target.value))}
-                            required
-                        />
-                    ))}
-                    <label>縦の設定：</label>
-                    {Object.entries(calcSetting.row).map(([k, v]) => (
-                        <input 
-                            type="number"
-                            key={k}
-                            value={v.value}
-                            onChange={(e) => handleChange("row", k, parseInt(e.target.value))}
-                            required
-                        />
-                    ))}
-                    <button onClick={() => { setIsConfirm(true); }}>確認画面へ</button>
-                    <button onClick={handleBackToOne}>前に戻る</button>
+                    <h1 className="text-4xl font-bold text-center text-gray-700 mb-6">{MODE_LABELS[mode!]} の百ます計算設定</h1>
+                    <div className="mb-4">
+                        <h2 className="font-semibold text-lg mb-1">横の設定：</h2>
+                        <div className="grid grid-cols-5 gap-2">
+                            {Object.entries(calcSetting.col).map(([k, v]) => (
+                                <input 
+                                    type="number"
+                                    key={k}
+                                    value={v.value}
+                                    onChange={(e) =>
+                                        handleChange("col", k, parseInt(e.target.value))
+                                    }
+                                    className="w-full p-3 border rounded-xl text-gray-900 focus:outline-none focus:ring-2 focus:ring-pink-300 text-center"
+                                    required
+                                />
+                            ))}
+                        </div>
+                    </div>
+                    
+                    <div className="mb-4">
+                        <h2 className="font-semibold text-lg mb-1">縦の設定：</h2>
+                        <div className="grid grid-cols-5 gap-2">
+                            {Object.entries(calcSetting.row).map(([k, v]) => (
+                                <input 
+                                    type="number"
+                                    key={k}
+                                    value={v.value}
+                                    onChange={(e) =>
+                                        handleChange("row", k, parseInt(e.target.value))
+                                    }
+                                    className="w-full p-3 border rounded-xl text-gray-900 focus:outline-none focus:ring-2 focus:ring-pink-300 text-center"
+                                    required
+                                />
+                            ))}
+                        </div>
+                    </div>
+
+                    <div className="flex flex-col gap-4 w-full max-w-sm">
+                        <Button
+                            type="button"
+                            color="gamesetting"
+                            onClick={() => { setIsConfirm(true); }}
+                        >
+                            設定内容を確認する
+                        </Button>
+                        <Button
+                            type="button"
+                            color="back"
+                            onClick={handleBackToOne}
+                        >
+                            モード選択へ戻る
+                        </Button>
+                    </div>
                 </div>
             )}
         </AuthGuard>

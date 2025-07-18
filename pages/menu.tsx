@@ -69,27 +69,28 @@ export default function Menu() {
         <p className="text-xl mb-6">
           ようこそ、<span className="font-semibold">{userOmit.name}</span>さん！
         </p>
-        <div className="flex flex-wrap gap-4 max-w-md w-full justify-center">
-          {[0].includes(userOmit.role) && (
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              onClick={handleUserManage}
-              className="bg-blue-600 text-white py-3 px-5 rounded-xl shadow hover:bg-blue-700 transition"
-            >
-              ユーザ管理
-            </motion.button>
-          )}
+        <div className="grid grid-cols-2 gap-4 max-w-md w-full justify-center">
 
           {[0].includes(userOmit.role) && (
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              onClick={handleScoreManage}
-              className="bg-blue-600 text-white py-3 px-5 rounded-xl shadow hover:bg-blue-700 transition"
-            >
-              成績管理
-            </motion.button>
+            <>
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                onClick={handleUserManage}
+                className="bg-blue-600 text-white py-3 px-5 rounded-xl shadow hover:bg-blue-700 transition"
+              >
+                ユーザ管理
+              </motion.button>
+
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                onClick={handleScoreManage}
+                className="bg-blue-600 text-white py-3 px-5 rounded-xl shadow hover:bg-blue-700 transition"
+              >
+                成績管理
+              </motion.button>
+            </>
           )}
 
           <motion.button
@@ -100,6 +101,7 @@ export default function Menu() {
           >
             百ます計算
           </motion.button>
+
           <motion.button
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
@@ -111,33 +113,38 @@ export default function Menu() {
 
 
           {[0, 1].includes(userOmit.role) && (
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              onClick={handleSetting}
-              className="bg-yellow-500 text-white py-3 px-5 rounded-xl shadow hover:bg-yellow-600 transition"
-            >
-              ユーザ設定
-            </motion.button>
-          )}
+            <>
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                onClick={handleSetting}
+                className={`bg-yellow-500 text-white py-3 px-5 rounded-xl shadow hover:bg-yellow-600 transition ${
+                  [0].includes(userOmit.role) ? 'w-full' : 'col-span-2'
+                }`}
+              >
+                ユーザ設定
+              </motion.button>
+          
           
 
-          {[0].includes(userOmit.role) && (
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              onClick={handleGameSetting}
-              className="bg-yellow-500 text-white py-3 px-5 rounded-xl shadow hover:bg-yellow-600 transition"
-            >
-              百ます計算設定
-            </motion.button>
+              {[0].includes(userOmit.role) && (
+                <motion.button
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  onClick={handleGameSetting}
+                  className="bg-yellow-500 text-white py-3 px-5 rounded-xl shadow hover:bg-yellow-600 transition"
+                >
+                  百ます計算設定
+                </motion.button>
+              )}
+            </>
           )}
 
           <motion.button
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             onClick={handleLogout}
-            className="bg-red-500 text-white py-3 px-5 rounded-xl shadow hover:bg-red-600 transition"
+            className="col-span-2 bg-red-500 text-white py-3 px-5 rounded-xl shadow hover:bg-red-600 transition w-full"
           >
             ログアウト
           </motion.button>
