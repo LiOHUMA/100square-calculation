@@ -2,11 +2,12 @@
 //  @description  百ます計算の設定取得機能。
 //                現在設定されている百ます計算の設定情報を取得する。
 //  @created      2025-06-06 by uma
-//  @version      1.0.0
-//  @lastModified 2025-06-06 by uma
+//  @version      1.0.1
+//  @lastModified 2025-09-29 by uma
 
 // 変更履歴
 // ver 1.0.0 - 新規作成
+// ver 1.0.1 - アクセス可能なユーザ権限の見直し（ゲームから遷移することで使用していたため）
 
 
 import { NextApiRequest, NextApiResponse } from 'next';
@@ -26,8 +27,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
         const user = await getUserById(decoded.id);
         if (!user) return res.status(404).json({ message: "ユーザが存在しません" });
-
-        if (user.role !== 0 ) return res.status(404).json({ message: "ユーザに権限がありません" });
 
         const { mode } = req.body;
         if (!mode) {
